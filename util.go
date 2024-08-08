@@ -15,12 +15,6 @@ func (iim intIntMap) IncrementKey(i int) {
 	}
 }
 
-func contains[T comparable](s []T, t T) bool {
-	for _, v := range s {
-		if v == t {
-			return true
-		}
-	}
-
-	return false
+func containsCandidate(candidates []int, val int) bool {
+	return candidates[val] == 1
 }

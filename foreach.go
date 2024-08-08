@@ -92,10 +92,26 @@ var (
 	}
 )
 
-func foreachUnsolvedCells(f func(i int, v cell)) {
+func foreachUnsolvedCells(f func(id int, v cell)) {
 	for i, v := range cells {
 		if v.candidates != nil {
 			f(i, v)
+		}
+	}
+}
+
+func foreachEmptyCellIds(cellIds []int, f func(id int, v cell)) {
+	for _, id := range cellIds {
+		if cells[id].value == 0 {
+			f(id, cells[id])
+		}
+	}
+}
+
+func foreachFilledCellIds(cellIds []int, f func(id int, v cell)) {
+	for _, id := range cellIds {
+		if cells[id].value == 0 {
+			f(id, cells[id])
 		}
 	}
 }

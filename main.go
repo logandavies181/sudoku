@@ -9,9 +9,9 @@ import (
 )
 
 var (
-	start = time.Now()
+	cells []cell
 	nums = []int{}
-	cells = cellsFromInts(nums)
+	start = time.Now()
 )
 
 
@@ -35,6 +35,30 @@ func printPuzzle() {
 	fmt.Println(boxRowDivider)
 }
 
+func validatePuzzle() error {
+	var err error
+
+	foreachRBC(func(cellIds []int) {
+		if err != nil {
+			return
+		}
+
+		valueCounts := newIntIntMap()
+		foreachCellIds(cellIds, func(id int, v cell) {
+			valueCounts.IncrementKey(v.value)
+		})
+
+		for k, v := range valueCounts {
+			if v > 1 {
+				err = fmt.Errorf("too many of: %d\n", k)
+				break
+			}
+		}
+	})
+
+	return err
+}
+
 func main() {
 	err := mainE()
 	if err != nil {
@@ -44,45 +68,55 @@ func main() {
 }
 
 func mainE() error {
-	if len(os.Args) == 2 {
-		f, err := os.Open(os.Args[1])
-		if err != nil {
-			return err
-		}
-
-		lines, err := csv.NewReader(f).ReadAll()
-		if err != nil {
-			return err
-		}
-
-		nums := make([]int, 81)
-		count := 0
-		for _, line := range lines {
-			for i, v := range line {
-				nums[i], err = strconv.Atoi(v)
-				if err != nil {
-					return err
-				}
-
-				count++
-			}
-		}
-
-	} else {
+	if len(os.Args) != 2 {
 		return fmt.Errorf("file name required")
 	}
 
-	atLeastOneSolved := true
-	for atLeastOneSolved {
-		atLeastOneSolved = false
-		
-		basicCheckCell()
-		basicCheckRBCSingle()
+	f, err := os.Open(os.Args[1])
+	if err != nil {
+		return err
+	}
 
-		atLeastOneSolved = updateSolvedCells()
+	lines, err := csv.NewReader(f).ReadAll()
+	if err != nil {
+		return err
+	}
+
+	nums := make([]int, 81)
+	count := 0
+	for _, line := range lines {
+		for _, v := range line {
+			nums[count], err = strconv.Atoi(v)
+			if err != nil {
+				return err
+			}
+
+			count++
+		}
+	}
+
+	if count != 81 {
+		return fmt.Errorf("bad input file")
+	}
+
+	cells = cellsFromInts(nums)
+
+	for {
+		basicCheckCells()
+		if
+			! basicSolveRBCSingle() &&
+			! updateSolvedCells() {
+
+			break
+		}
 	}
 
 	printPuzzle()
+
+	err = validatePuzzle()
+	if err != nil {
+		return err
+	}
 
 	fmt.Println(time.Now().Sub(start))
 

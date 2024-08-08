@@ -58,8 +58,8 @@ func (c *cell) solve() {
 }
 
 func (c *cell) solveAs(val int) {
-	if ! contains(c.candidates, val) {
-		panic(fmt.Sprint("cell does not contain candidate", val))
+	if ! containsCandidate(c.candidates, val) {
+		panic(fmt.Sprint("cell does not contain candidate ", val))
 	}
 
 	c.value = val

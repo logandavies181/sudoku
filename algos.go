@@ -1,9 +1,9 @@
 package main
 
 // remove any candidates in each cell whose values can be seen from that cell
-func basicCheckCell() {
-	foreachUnsolvedCells(func(i int, v cell) {
-		seenByCellIds := getAllSeenBy(i)
+func basicCheckCells() {
+	foreachUnsolvedCells(func(id int, v cell) {
+		seenByCellIds := getAllSeenBy(id)
 		for _, seenByCellId := range seenByCellIds {
 			v.removeCandidate(cells[seenByCellId].value)
 		}
@@ -11,14 +11,21 @@ func basicCheckCell() {
 }
 
 // check only one valid spot in the r/b/c for a given number
-func basicCheckRBCSingle() {
+func basicSolveRBCSingle() bool {
+	found := false
 	foreachRBC(func(cellIds []int) {
 		candidateCounts := newIntIntMap()
 
-		foreachCellIds(cellIds, func(id int, v cell) {
-			for _, can := range cells[id].candidates {
-				candidateCounts.IncrementKey(can)
+		foreachEmptyCellIds(cellIds, func(id int, v cell) {
+			for val, exists := range cells[id].candidates {
+				if exists == 1 {
+					candidateCounts.IncrementKey(val)
+				}
 			}
+		})
+
+		foreachFilledCellIds(cellIds, func(id int, v cell) {
+			delete(candidateCounts, v.value)
 		})
 
 		singleCandidates := make([]int, 0)
@@ -33,13 +40,18 @@ func basicCheckRBCSingle() {
 		}
 
 		for _, can := range singleCandidates {
-			foreachCellIds(cellIds, func(id int, v cell) {
-				if contains(v.candidates, can) {
-					cells[id].solve()
+			can := can
+			foreachEmptyCellIds(cellIds, func(id int, v cell) {
+				if containsCandidate(v.candidates, can) {
+					found = true
+					cells[id].solveAs(can)
+					basicCheckCells()
 				}
 			})
 		}
 	})
+
+	return found
 }
 
 // update solve any cells that have only one candidate remaining
