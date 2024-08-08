@@ -100,22 +100,32 @@ func foreachUnsolvedCells(f func(i int, v cell)) {
 	}
 }
 
-func foreach(iterator [][]int, f func(i int, v cell)) {
-	for _, item := range iterator {
-		for i := range item {
-			f(i, cells[i])
-		}
+func foreachCellIds(cellIds []int, f func(id int, v cell)) {
+	for _, id := range cellIds {
+		f(id, cells[id])
 	}
 }
 
-func foreachBox(f func(i int, v cell)) {
-	foreach(boxes, f)
+func foreach(iterator [][]int, f func(cellIds []int)) {
+	for _, item := range iterator {
+		f(item)
+	}
 }
 
-func foreachRow(f func(i int, v cell)) {
+func foreachRow(f func(cellIds []int)) {
 	foreach(rows, f)
 }
 
-func foreachColumn(f func(i int, v cell)) {
+func foreachBox(f func(cellIds []int)) {
+	foreach(boxes, f)
+}
+
+func foreachColumn(f func(cellIds []int)) {
 	foreach(columns, f)
+}
+
+func foreachRBC(f func(cellIds []int)) {
+	for _, fe := range []func(func(cellIds []int)){foreachRow, foreachBox, foreachColumn} {
+		fe(f)
+	}
 }
