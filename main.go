@@ -59,20 +59,8 @@ func validatePuzzle() error {
 	return err
 }
 
-func main() {
-	err := mainE()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-}
-
-func mainE() error {
-	if len(os.Args) != 2 {
-		return fmt.Errorf("file name required")
-	}
-
-	f, err := os.Open(os.Args[1])
+func initializeFromFile(fname string) error {
+	f, err := os.Open(fname)
 	if err != nil {
 		return err
 	}
@@ -96,10 +84,33 @@ func mainE() error {
 	}
 
 	if count != 81 {
-		return fmt.Errorf("bad input file")
+		return fmt.Errorf("bad input file. incorrect number of cells")
 	}
 
 	cells = cellsFromInts(nums)
+
+	basicCheckCells()
+
+	return nil
+}
+
+func main() {
+	err := mainE()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
+	}
+}
+
+func mainE() error {
+	if len(os.Args) != 2 {
+		return fmt.Errorf("file name required")
+	}
+
+	err := initializeFromFile(os.Args[1])
+	if err != nil {
+		return fmt.Errorf("could not read input file: %w", err)
+	}
 
 	for {
 		basicCheckCells()

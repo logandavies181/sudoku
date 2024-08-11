@@ -16,7 +16,7 @@ func (iim intIntMap) IncrementKey(i int) {
 }
 
 func containsCandidate(candidates []int, val int) bool {
-	return candidates[val] == 1
+	return candidates != nil && candidates[val] == 1
 }
 
 func getCandidateCounts(cellIds []int) intIntMap {
@@ -69,6 +69,12 @@ func allInSameRow(cellIds []int) bool {
 
 func removeCandidatesFromRow(yPos int, candidate int) {
 	for i := range rows[yPos] {
+		cells[i].removeCandidate(candidate)
+	}
+}
+
+func removeCandidatesFromColumn(xPos int, candidate int) {
+	for i := range columns[xPos] {
 		cells[i].removeCandidate(candidate)
 	}
 }

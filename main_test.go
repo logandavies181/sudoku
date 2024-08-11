@@ -1,7 +1,8 @@
 package main
 
-import(
+import (
 	"testing"
+
 	"github.com/stretchr/testify/assert"
 )
 func TestCanSee_CanSee(t *testing.T) {
@@ -25,4 +26,14 @@ func TestCanSee_XPos(t *testing.T) {
 func TestCanSee_YPos(t *testing.T) {
 	assert.Equal(t, 0, yPos(8))
 	assert.Equal(t, 4, yPos(43))
+}
+
+func Test_CheckBoxLinearCandidates(t *testing.T) {
+	err := initializeFromFile("test/checkBoxLinearCandidates.txt")
+	assert.Nil(t, err)
+
+	updated := checkBoxLinearCandidates()
+
+	assert.True(t, updated)
+	assert.True(t, cells[3].candidates[7] == 0)
 }

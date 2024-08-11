@@ -51,29 +51,31 @@ func checkBoxLinearCandidates() bool {
 	found := false
 
 	foreachBox(func(cellIds []int) {
-		candidateCounts := getCandidateCounts(cellIds)
-		for candidate, count := range candidateCounts {
-			if count > 3 || count < 2 {
-				// 1 is solved, 4 is too many
-				continue
+		foreachEmptyCellIds(cellIds, func(id int, v cell) {
+			candidateCounts := getCandidateCounts(cellIds)
+			for candidate, count := range candidateCounts {
+				if count > 3 && count < 2 {
+					// 1 is solved, 4 is too many
+					continue
+				}
+
+				found = true
+
+				locations := locateCandidates(cellIds, candidate)
+
+				if allInSameRow(locations) {
+					rowId := yPos(locations[0])
+					removeCandidatesFromRow(rowId, candidate)
+					addCandidateToCells(locations, candidate)
+				}
+
+				if allInSameColumn(locations) {
+					colId := xPos(locations[0])
+					removeCandidatesFromColumn(colId, candidate)
+					addCandidateToCells(locations, candidate)
+				}
 			}
-
-			found = true
-
-			locations := locateCandidates(cellIds, candidate)
-
-			if allInSameRow(locations) {
-				rowId := yPos(locations[0])
-				removeCandidatesFromRow(rowId, candidate)
-				addCandidateToCells(locations, candidate)
-			}
-
-			if allInSameColumn(locations) {
-				colId := xPos(locations[0])
-				removeCandidatesFromRow(colId, candidate)
-				addCandidateToCells(locations, candidate)
-			}
-		}
+		})
 	})
 
 	return found
