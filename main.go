@@ -105,6 +105,7 @@ func mainE() error {
 		basicCheckCells()
 		if
 			! basicSolveRBCSingle() &&
+			! checkBoxLinearCandidates() &&
 			! updateSolvedCells() {
 
 			break

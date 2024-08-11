@@ -21,6 +21,10 @@ func newCell(n int) cell {
 	}
 }
 
+func (c *cell) addCandidate(n int) {
+	c.candidates[n] = 1
+}
+
 func (c *cell) removeCandidate(n int) {
 	c.candidates[n] = 0
 }

@@ -14,15 +14,7 @@ func basicCheckCells() {
 func basicSolveRBCSingle() bool {
 	found := false
 	foreachRBC(func(cellIds []int) {
-		candidateCounts := newIntIntMap()
-
-		foreachEmptyCellIds(cellIds, func(id int, v cell) {
-			for val, exists := range cells[id].candidates {
-				if exists == 1 {
-					candidateCounts.IncrementKey(val)
-				}
-			}
-		})
+		candidateCounts := getCandidateCounts(cellIds)
 
 		foreachFilledCellIds(cellIds, func(id int, v cell) {
 			delete(candidateCounts, v.value)
@@ -48,6 +40,39 @@ func basicSolveRBCSingle() bool {
 					basicCheckCells()
 				}
 			})
+		}
+	})
+
+	return found
+}
+
+// check for 2/3 lined up candidates within a box
+func checkBoxLinearCandidates() bool {
+	found := false
+
+	foreachBox(func(cellIds []int) {
+		candidateCounts := getCandidateCounts(cellIds)
+		for candidate, count := range candidateCounts {
+			if count > 3 || count < 2 {
+				// 1 is solved, 4 is too many
+				continue
+			}
+
+			found = true
+
+			locations := locateCandidates(cellIds, candidate)
+
+			if allInSameRow(locations) {
+				rowId := yPos(locations[0])
+				removeCandidatesFromRow(rowId, candidate)
+				addCandidateToCells(locations, candidate)
+			}
+
+			if allInSameColumn(locations) {
+				colId := xPos(locations[0])
+				removeCandidatesFromRow(colId, candidate)
+				addCandidateToCells(locations, candidate)
+			}
 		}
 	})
 
