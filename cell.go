@@ -27,10 +27,13 @@ func (c *cell) addCandidate(n int) {
 	}
 }
 
-func (c *cell) removeCandidate(n int) {
+func (c *cell) removeCandidate(n int) bool {
+	changed := false
 	if c.candidates != nil {
+		changed = c.candidates[n] == 1
 		c.candidates[n] = 0
 	}
+	return changed
 }
 
 func (c *cell) numCandidates() int {

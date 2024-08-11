@@ -37,6 +37,7 @@ func printPuzzle() {
 func validatePuzzle() error {
 	var err error
 
+	// check for duplicates in RBC
 	foreachRBC(func(cellIds []int) {
 		if err != nil {
 			return
@@ -48,10 +49,28 @@ func validatePuzzle() error {
 		})
 
 		for k, v := range valueCounts {
-			if v > 1 {
+			if k > 0 && v > 1 {
 				err = fmt.Errorf("too many of: %d\n", k)
 				break
 			}
+		}
+	})
+
+	// check for cells with no candidates
+	foreachUnsolvedCells(func(id int, v cell) {
+		if err != nil {
+			return
+		}
+
+		found := false
+		for _, v := range v.candidates {
+			if v == 1 {
+				found = true
+			}
+		}
+
+		if !found {
+			err = fmt.Errorf("no available candidates in cell: %d", id)
 		}
 	})
 
@@ -112,11 +131,19 @@ func mainE() error {
 	}
 
 	for {
-		basicCheckCells()
-		if !basicSolveRBCSingle() &&
-			!checkBoxLinearCandidates() &&
-			!updateSolvedCells() {
+		shouldBreak := true
+		for _, alg := range []func() bool {
+			basicCheckCells,
+			basicSolveRBCSingle,
+			checkBoxLinearCandidates,
+			updateSolvedCells,
+		} {
+			if alg() {
+				shouldBreak = false
+			}
+		}
 
+		if shouldBreak {
 			break
 		}
 	}
@@ -124,11 +151,7 @@ func mainE() error {
 	printPuzzle()
 
 	err = validatePuzzle()
-	if err != nil {
-		return err
-	}
-
 	fmt.Println(time.Now().Sub(start))
 
-	return nil
+	return err
 }

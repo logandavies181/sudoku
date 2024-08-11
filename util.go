@@ -68,19 +68,19 @@ func allInSameRow(cellIds []int) bool {
 }
 
 func removeCandidatesFromRow(yPos int, candidate int) {
-	for i := range rows[yPos] {
-		cells[i].removeCandidate(candidate)
+	for _, v := range rows[yPos] {
+		cells[v].removeCandidate(candidate)
 	}
 }
 
 func removeCandidatesFromColumn(xPos int, candidate int) {
-	for i := range columns[xPos] {
-		cells[i].removeCandidate(candidate)
+	for _, v := range columns[xPos] {
+		cells[v].removeCandidate(candidate)
 	}
 }
 
 func addCandidateToCells(cellIds []int, candidate int) {
-	for i := range cellIds {
-		cells[i].addCandidate(candidate)
+	for _, v := range cellIds {
+		cells[v].addCandidate(candidate)
 	}
 }

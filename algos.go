@@ -1,13 +1,18 @@
 package main
 
 // remove any candidates in each cell whose values can be seen from that cell
-func basicCheckCells() {
+func basicCheckCells() bool {
+	found := false
 	foreachUnsolvedCells(func(id int, v cell) {
 		seenByCellIds := getAllSeenBy(id)
 		for _, seenByCellId := range seenByCellIds {
-			v.removeCandidate(cells[seenByCellId].value)
+			if v.removeCandidate(cells[seenByCellId].value) {
+				found = true
+			}
 		}
 	})
+
+	return found
 }
 
 // check only one valid spot in the r/b/c for a given number
@@ -49,12 +54,11 @@ func basicSolveRBCSingle() bool {
 // check for 2/3 lined up candidates within a box
 func checkBoxLinearCandidates() bool {
 	found := false
-
 	foreachBox(func(cellIds []int) {
 		foreachEmptyCellIds(cellIds, func(id int, v cell) {
 			candidateCounts := getCandidateCounts(cellIds)
 			for candidate, count := range candidateCounts {
-				if count > 3 && count < 2 {
+				if count > 3 || count < 2 {
 					// 1 is solved, 4 is too many
 					continue
 				}
