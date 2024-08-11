@@ -5,6 +5,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 )
+
 func TestCanSee_CanSee(t *testing.T) {
 	assert.True(t, canSee(3, 57))
 	assert.True(t, canSee(3, 4))

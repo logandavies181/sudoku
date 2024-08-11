@@ -10,23 +10,22 @@ import (
 
 var (
 	cells []cell
-	nums = []int{}
+	nums  = []int{}
 	start = time.Now()
 )
-
 
 func printPuzzle() {
 	boxRowDivider := "-------------"
 	for i, v := range cells {
 		switch {
-		case i % 27 == 0:
+		case i%27 == 0:
 			fmt.Println(boxRowDivider)
 			fmt.Printf("|%d", v.value)
-		case i % 27 == 26:
+		case i%27 == 26:
 			fmt.Printf("%d|\n", v.value)
-		case i % 9 == 0:
+		case i%9 == 0:
 			fmt.Printf("|\n|%d", v.value)
-		case i % 3 == 0:
+		case i%3 == 0:
 			fmt.Printf("|%d", v.value)
 		default:
 			fmt.Print(v.value)
@@ -114,10 +113,9 @@ func mainE() error {
 
 	for {
 		basicCheckCells()
-		if
-			! basicSolveRBCSingle() &&
-			! checkBoxLinearCandidates() &&
-			! updateSolvedCells() {
+		if !basicSolveRBCSingle() &&
+			!checkBoxLinearCandidates() &&
+			!updateSolvedCells() {
 
 			break
 		}

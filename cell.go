@@ -3,7 +3,7 @@ package main
 import "fmt"
 
 type cell struct {
-	value int
+	value      int
 	candidates []int
 }
 
@@ -16,7 +16,7 @@ func newCell(n int) cell {
 	}
 
 	return cell{
-		value: n,
+		value:      n,
 		candidates: candidates,
 	}
 }
@@ -66,7 +66,7 @@ func (c *cell) solve() {
 }
 
 func (c *cell) solveAs(val int) {
-	if ! containsCandidate(c.candidates, val) {
+	if !containsCandidate(c.candidates, val) {
 		panic(fmt.Sprint("cell does not contain candidate ", val))
 	}
 
@@ -125,5 +125,5 @@ func boxIndex(src int) int {
 	xPos := xPos(src)
 	yPos := yPos(src)
 
-	return xPos / 3 + (yPos / 3) * 3
+	return xPos/3 + (yPos/3)*3
 }
