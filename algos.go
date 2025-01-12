@@ -3,13 +3,13 @@ package main
 // remove any candidates in each cell whose values can be seen from that cell
 func basicCheckCells() bool {
 	found := false
-	foreachUnsolvedCells(func(id int, v cell) {
+	foreachAllUnsolvedCells(func(id int, v cell) {
 		seenByCellIds := getAllSeenBy(id)
-		for _, seenByCellId := range seenByCellIds {
+		foreachUnsolvedCells(seenByCellIds, func(id int, v cell) {
 			if v.removeCandidate(cells[seenByCellId].value) {
 				found = true
 			}
-		}
+		})
 	})
 
 	return found
@@ -89,7 +89,7 @@ func checkBoxLinearCandidates() bool {
 func updateSolvedCells() bool {
 	found := false
 
-	foreachUnsolvedCells(func(i int, v cell) {
+	foreachAllUnsolvedCells(func(i int, v cell) {
 		if cells[i].numCandidates() == 1 && cells[i].value == 0 {
 			cells[i].solve()
 			found = true

@@ -53,6 +53,6 @@ func Test_CheckBoxLinearCandidates_NoopCompletedPuzzle(t *testing.T) {
 func TestGetCandidateCounts_NoneCompletedPuzzle(t *testing.T) {
 	err := initializeFromFile("test/completed.txt")
 	assert.Nil(t, err)
-
-	//ccs := getCandidateCounts(cellIds)
+	
+	 // TODO
 }

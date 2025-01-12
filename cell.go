@@ -21,6 +21,14 @@ func newCell(n int) cell {
 	}
 }
 
+func (c *cell) solved() bool {
+	if ( c.value != 0 ) != ( c.candidates == 0 ) {
+		panic("have either value or candidates")
+	}
+
+	return c.value != 0 && c.candidates == 0
+}
+
 func (c *cell) hasCandidate(n int) bool {
 	return c.candidates&(1<<(n-1)) > 0
 }
@@ -30,6 +38,10 @@ func (c *cell) addCandidate(n int) {
 }
 
 func (c *cell) removeCandidate(n int) bool {
+	if n == 0 {
+		panic("tried to remove 0")
+	}
+
 	initial := c.candidates
 	c.candidates ^= (1 << (n - 1))
 	return c.candidates != initial

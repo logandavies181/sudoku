@@ -92,9 +92,18 @@ var (
 	}
 )
 
-func foreachUnsolvedCells(f func(id int, v cell)) {
+func foreachUnsolvedCells(cellIds []int, f func(id int, v cell)) {
+	for i, v := range cellIds {
+		c := cells[v]
+		if !c.solved() {
+			f(i, c)
+		}
+	}
+}
+
+func foreachAllUnsolvedCells(f func(id int, v cell)) {
 	for i, v := range cells {
-		if v.candidates != 0 {
+		if !v.solved() {
 			f(i, v)
 		}
 	}

@@ -135,9 +135,9 @@ func mainE() error {
 		shouldBreak := true
 		for _, alg := range []func() bool{
 			basicCheckCells,
-			basicSolveRBCSingle,
+			//basicSolveRBCSingle,
 			//checkBoxLinearCandidates,
-			updateSolvedCells,
+			//updateSolvedCells,
 		} {
 			if alg() {
 				shouldBreak = false

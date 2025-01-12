@@ -38,6 +38,7 @@ func TestRemoveCandidate(t *testing.T) {
 
 	assert.True(t, changed)
 	assert.False(t, c.hasCandidate(1))
+	assert.Equal(t, uint16(0b111111110), c.candidates, toBinaryString(c.candidates))
 }
 
 func TestNumCandidates(t *testing.T) {
