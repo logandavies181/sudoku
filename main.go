@@ -136,7 +136,7 @@ func mainE() error {
 		for _, alg := range []func() bool {
 			basicCheckCells,
 			basicSolveRBCSingle,
-			checkBoxLinearCandidates,
+			//checkBoxLinearCandidates,
 			updateSolvedCells,
 		} {
 			if alg() {

@@ -59,7 +59,7 @@ func checkBoxLinearCandidates() bool {
 			candidateCounts := getCandidateCounts(cellIds)
 			for candidate, count := range candidateCounts {
 				if count > 3 || count < 2 {
-					// 1 is solved, 4 is too many
+					// 0 is solved, 4 is too many
 					continue
 				}
 
