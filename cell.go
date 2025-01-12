@@ -22,7 +22,7 @@ func newCell(n int) cell {
 }
 
 func (c *cell) hasCandidate(n int) bool {
-	return c.candidates & (1 << n - 1) == 0
+	return c.candidates & (1 << n - 1) > 0
 }
 
 func (c *cell) addCandidate(n int) {

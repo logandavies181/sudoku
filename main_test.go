@@ -54,5 +54,5 @@ func TestGetCandidateCounts_NoneCompletedPuzzle(t *testing.T) {
 	err := initializeFromFile("test/completed.txt")
 	assert.Nil(t, err)
 
-	ccs := getCandidateCounts(cellIds)
+	//ccs := getCandidateCounts(cellIds)
 }
