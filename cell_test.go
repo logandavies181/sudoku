@@ -22,9 +22,20 @@ func TestHasCandidate(t *testing.T) {
 }
 
 func TestAddCandidate(t *testing.T) {
-	c := newCell(0)
+	c := cell{
+		candidates: 0b1,
+	}
 
 	c.addCandidate(1)
 
 	assert.True(t, c.hasCandidate(1), toBinaryString(c.candidates))
+}
+
+func TestRemoveCandidate(t *testing.T) {
+	c := newCell(0)
+
+	changed := c.removeCandidate(1)
+
+	assert.True(t, changed)
+	assert.False(t, c.hasCandidate(1))
 }

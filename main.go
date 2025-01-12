@@ -133,7 +133,7 @@ func mainE() error {
 
 	for {
 		shouldBreak := true
-		for _, alg := range []func() bool {
+		for _, alg := range []func() bool{
 			basicCheckCells,
 			basicSolveRBCSingle,
 			//checkBoxLinearCandidates,

@@ -22,16 +22,16 @@ func newCell(n int) cell {
 }
 
 func (c *cell) hasCandidate(n int) bool {
-	return c.candidates & (1 << n - 1) > 0
+	return c.candidates&(1<<(n-1)) > 0
 }
 
 func (c *cell) addCandidate(n int) {
-	c.candidates |= (1 << n - 1)
+	c.candidates |= (1 << (n - 1))
 }
 
 func (c *cell) removeCandidate(n int) bool {
 	initial := c.candidates
-	c.candidates ^= (1 << n - 1)
+	c.candidates ^= (1 << (n - 1))
 	return c.candidates != initial
 }
 
@@ -40,7 +40,7 @@ func (c *cell) numCandidates() int {
 	count := 0
 	for i := 0; i < 9; i++ {
 		// todo use hasCandidates
-		if candidates & 1 == 1 {
+		if candidates&1 == 1 {
 			count++
 		}
 		candidates >>= 1
@@ -55,7 +55,7 @@ func (c *cell) listCandidates() []int {
 
 	for i := 0; i < 9; i++ {
 		// todo use hasCandidates
-		if candidates & 1 == 1 {
+		if candidates&1 == 1 {
 			ret = append(ret, i+1)
 		}
 	}
