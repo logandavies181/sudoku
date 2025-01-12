@@ -4,15 +4,15 @@ import "fmt"
 
 type cell struct {
 	value      int
-	candidates []int
+	candidates uint16
 }
 
 func newCell(n int) cell {
-	var candidates []int
+	var candidates uint16
 	if n == 0 {
 		candidates = allCandidates()
 	} else {
-		candidates = nil
+		candidates = 0
 	}
 
 	return cell{
@@ -21,38 +21,42 @@ func newCell(n int) cell {
 	}
 }
 
+func (c *cell) hasCandidate(n int) bool {
+	return c.candidates & (1 << n - 1) == 0
+}
+
 func (c *cell) addCandidate(n int) {
-	if c.candidates != nil {
-		c.candidates[n] = 1
-	}
+	c.candidates |= (1 << n - 1)
 }
 
 func (c *cell) removeCandidate(n int) bool {
-	changed := false
-	if c.candidates != nil {
-		changed = c.candidates[n] == 1
-		c.candidates[n] = 0
-	}
-	return changed
+	initial := c.candidates
+	c.candidates ^= (1 << n - 1)
+	return c.candidates != initial
 }
 
 func (c *cell) numCandidates() int {
+	candidates := c.candidates
 	count := 0
-	for _, v := range c.candidates[1:] {
-		if v == 1 {
+	for i := 0; i < 9; i++ {
+		// todo use hasCandidates
+		if candidates & 1 == 1 {
 			count++
 		}
+		candidates >>= 1
 	}
 
 	return count
 }
 
 func (c *cell) listCandidates() []int {
+	candidates := c.candidates
 	ret := make([]int, 0)
 
-	for i, v := range c.candidates {
-		if v == 1 && i != 0 {
-			ret = append(ret, i)
+	for i := 0; i < 9; i++ {
+		// todo use hasCandidates
+		if candidates & 1 == 1 {
+			ret = append(ret, i+1)
 		}
 	}
 
@@ -64,17 +68,17 @@ func (c *cell) solve() {
 	cds := c.listCandidates()
 	if len(cds) == 1 {
 		c.value = cds[0]
-		c.candidates = nil
+		c.candidates = 0
 	}
 }
 
 func (c *cell) solveAs(val int) {
-	if !containsCandidate(c.candidates, val) {
+	if !c.hasCandidate(val) {
 		panic(fmt.Sprint("cell does not contain candidate ", val))
 	}
 
 	c.value = val
-	c.candidates = nil
+	c.candidates = 0
 }
 
 func cellsFromInts(nums []int) []cell {
@@ -86,14 +90,8 @@ func cellsFromInts(nums []int) []cell {
 	return cells
 }
 
-func allCandidates() []int {
-	ret := make([]int, 10) // one extra space so we're not juggling the off-by-one constantly
-	for i := range ret {
-		ret[i] = 1
-	}
-	ret[0] = 0
-
-	return ret
+func allCandidates() uint16 {
+	return 0b111111111
 }
 
 func getAllSeenBy(src int) []int {

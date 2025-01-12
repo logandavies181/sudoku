@@ -94,7 +94,7 @@ var (
 
 func foreachUnsolvedCells(f func(id int, v cell)) {
 	for i, v := range cells {
-		if v.candidates != nil {
+		if v.candidates != 0 {
 			f(i, v)
 		}
 	}
@@ -143,5 +143,13 @@ func foreachColumn(f func(cellIds []int)) {
 func foreachRBC(f func(cellIds []int)) {
 	for _, fe := range []func(func(cellIds []int)){foreachRow, foreachBox, foreachColumn} {
 		fe(f)
+	}
+}
+
+func foreachCandidateInCell(c cell, f func(candidate int)) {
+	for i := 1; i < 10; i++ {
+		if c.hasCandidate(i) {
+			f(i)
+		}
 	}
 }

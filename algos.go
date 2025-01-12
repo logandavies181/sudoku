@@ -39,7 +39,7 @@ func basicSolveRBCSingle() bool {
 		for _, can := range singleCandidates {
 			can := can
 			foreachEmptyCellIds(cellIds, func(id int, v cell) {
-				if containsCandidate(v.candidates, can) {
+				if v.hasCandidate(can) {
 					found = true
 					cells[id].solveAs(can)
 					basicCheckCells()

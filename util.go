@@ -15,18 +15,12 @@ func (iim intIntMap) IncrementKey(i int) {
 	}
 }
 
-func containsCandidate(candidates []int, val int) bool {
-	return candidates != nil && candidates[val] == 1
-}
-
 func getCandidateCounts(cellIds []int) intIntMap {
 	candidateCounts := newIntIntMap()
 	foreachEmptyCellIds(cellIds, func(id int, v cell) {
-		for val, exists := range cells[id].candidates {
-			if exists == 1 {
-				candidateCounts.IncrementKey(val)
-			}
-		}
+		foreachCandidateInCell(cells[id], func(candidate int) {
+			candidateCounts.IncrementKey(candidate)
+		})
 	})
 
 	return candidateCounts
@@ -35,7 +29,7 @@ func getCandidateCounts(cellIds []int) intIntMap {
 func locateCandidates(cellIds []int, candidate int) []int {
 	ret := make([]int, 0)
 	for _, v := range cellIds {
-		if containsCandidate(cells[v].candidates, candidate) {
+		if cells[v].hasCandidate(candidate) {
 			ret = append(ret, v)
 		}
 	}

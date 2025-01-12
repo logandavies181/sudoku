@@ -57,17 +57,18 @@ func validatePuzzle() error {
 	})
 
 	// check for cells with no candidates
+	// fixme: why tho?
 	foreachUnsolvedCells(func(id int, v cell) {
 		if err != nil {
 			return
 		}
 
 		found := false
-		for _, v := range v.candidates {
-			if v == 1 {
+		foreachCandidateInCell(v, func(candidate int) {
+			if v.hasCandidate(candidate) {
 				found = true
 			}
-		}
+		})
 
 		if !found {
 			err = fmt.Errorf("no available candidates in cell: %d", id)
