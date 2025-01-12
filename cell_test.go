@@ -39,3 +39,19 @@ func TestRemoveCandidate(t *testing.T) {
 	assert.True(t, changed)
 	assert.False(t, c.hasCandidate(1))
 }
+
+func TestNumCandidates(t *testing.T) {
+	c := newCell(0)
+
+	actual := c.numCandidates()
+
+	assert.Equal(t, 9, actual)
+}
+
+func TestListCandidates(t *testing.T) {
+	c := newCell(0)
+
+	actual := c.listCandidates()
+
+	assert.Equal(t, []int{1, 2, 3, 4, 5, 6, 7, 8, 9}, actual)
+}
