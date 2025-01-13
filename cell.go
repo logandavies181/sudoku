@@ -62,13 +62,11 @@ func (c *cell) numCandidates() int {
 }
 
 func (c *cell) listCandidates() []int {
-	candidates := c.candidates
 	ret := make([]int, 0)
 
-	for i := 0; i < 9; i++ {
-		// todo use hasCandidates
-		if candidates&1 == 1 {
-			ret = append(ret, i+1)
+	for i := 1; i < 10; i++ {
+		if c.hasCandidate(i) {
+			ret = append(ret, i)
 		}
 	}
 
@@ -79,8 +77,7 @@ func (c *cell) solve() {
 	// todo: handle an error here maybe?
 	cds := c.listCandidates()
 	if len(cds) == 1 {
-		c.value = cds[0]
-		c.candidates = 0
+		c.solveAs(cds[0])
 	}
 }
 

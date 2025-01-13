@@ -142,7 +142,6 @@ func mainE() error {
 			updateSolvedCells,
 		} {
 			if alg() {
-				fmt.Println("looping =======================================")
 				shouldBreak = false
 			}
 		}

@@ -62,9 +62,9 @@ func TestNumCandidates(t *testing.T) {
 
 func TestNumCandidates_SomeRemoved(t *testing.T) {
 	c := newCell(0)
-
 	c.removeCandidate(1)
 	c.removeCandidate(2)
+
 	actual := c.numCandidates()
 
 	assert.Equal(t, 7, actual)
@@ -93,4 +93,14 @@ func TestListCandidates(t *testing.T) {
 	actual := c.listCandidates()
 
 	assert.Equal(t, []int{1, 2, 3, 4, 5, 6, 7, 8, 9}, actual)
+}
+
+func TestListCandidates_SomeRemoved(t *testing.T) {
+	c := newCell(0)
+	c.removeCandidate(1)
+	c.removeCandidate(2)
+
+	actual := c.listCandidates()
+
+	assert.Equal(t, []int{3, 4, 5, 6, 7, 8, 9}, actual)
 }

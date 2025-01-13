@@ -98,7 +98,7 @@ func updateSolvedCells() bool {
 	found := false
 
 	foreachAllUnsolvedCells(func(i int) {
-		if cells[i].numCandidates() == 1 && cells[i].value == 0 {
+		if cells[i].numCandidates() == 1 {
 			cells[i].solve()
 			found = true
 		}
