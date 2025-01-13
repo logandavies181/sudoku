@@ -141,7 +141,6 @@ func mainE() error {
 			//checkBoxLinearCandidates,
 			//updateSolvedCells,
 		} {
-			fmt.Println("looping")
 			if alg() {
 				shouldBreak = false
 			}

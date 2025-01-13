@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // remove any candidates in each cell whose values can be seen from that cell
 func basicCheckCells() bool {
 	found := false
@@ -10,7 +8,6 @@ func basicCheckCells() bool {
 		for _, seenByCellId := range seenByCellIds {
 			val := cells[seenByCellId].value
 			if val != 0 && cells[id].removeCandidate(val) {
-				fmt.Printf("removed %d from %d\n", val, id)
 				found = true
 			}
 		}
