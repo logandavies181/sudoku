@@ -61,20 +61,31 @@ func allInSameRow(cellIds []int) bool {
 	})
 }
 
-func removeCandidatesFromRow(yPos int, candidate int) {
+func removeCandidatesFromRow(yPos int, candidate int) int {
+	count := 0
 	for _, v := range rows[yPos] {
-		cells[v].removeCandidate(candidate)
+		if cells[v].removeCandidate(candidate) {
+			count++
+		}
 	}
+	return count
 }
 
-func removeCandidatesFromColumn(xPos int, candidate int) {
+func removeCandidatesFromColumn(xPos int, candidate int) int {
+	count := 0
 	for _, v := range columns[xPos] {
-		cells[v].removeCandidate(candidate)
+		if cells[v].removeCandidate(candidate) {
+			count++
+		}
 	}
+	return count
 }
 
-func addCandidateToCells(cellIds []int, candidate int) {
+func addCandidateToCells(cellIds []int, candidate int) int {
+	count := 0
 	for _, v := range cellIds {
 		cells[v].addCandidate(candidate)
+		count++
 	}
+	return count
 }

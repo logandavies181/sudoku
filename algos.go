@@ -56,7 +56,7 @@ func basicSolveRBCSingle() bool {
 func checkBoxLinearCandidates() bool {
 	found := false
 	foreachBox(func(cellIds []int) {
-		foreachEmptyCellIds(cellIds, func(id int, v cell) {
+		foreachUnsolvedCells(cellIds, func(id int) {
 			candidateCounts := getCandidateCounts(cellIds)
 			for candidate, count := range candidateCounts {
 				if count > 3 || count < 2 {
@@ -64,20 +64,27 @@ func checkBoxLinearCandidates() bool {
 					continue
 				}
 
-				found = true
-
 				locations := locateCandidates(cellIds, candidate)
 
 				if allInSameRow(locations) {
 					rowId := yPos(locations[0])
-					removeCandidatesFromRow(rowId, candidate)
-					addCandidateToCells(locations, candidate)
+
+					// TODO: must be a better way
+					numRemoved := removeCandidatesFromRow(rowId, candidate)
+					numRestored := addCandidateToCells(locations, candidate)
+					if numRemoved > numRestored {
+						found = true
+					}
 				}
 
 				if allInSameColumn(locations) {
 					colId := xPos(locations[0])
-					removeCandidatesFromColumn(colId, candidate)
-					addCandidateToCells(locations, candidate)
+
+					numRemoved := removeCandidatesFromColumn(colId, candidate)
+					numRestored := addCandidateToCells(locations, candidate)
+					if numRemoved > numRestored {
+						found = true
+					}
 				}
 			}
 		})

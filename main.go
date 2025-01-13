@@ -137,11 +137,12 @@ func mainE() error {
 		shouldBreak := true
 		for _, alg := range []func() bool{
 			basicCheckCells,
-			//basicSolveRBCSingle,
-			//checkBoxLinearCandidates,
-			//updateSolvedCells,
+			basicSolveRBCSingle,
+			checkBoxLinearCandidates,
+			updateSolvedCells,
 		} {
 			if alg() {
+				fmt.Println("looping =======================================")
 				shouldBreak = false
 			}
 		}
