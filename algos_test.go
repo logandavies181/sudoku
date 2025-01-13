@@ -3,10 +3,11 @@ package main
 import (
 	"testing"
 
+	"github.com/logandavies181/sudoku/cell"
 	"github.com/stretchr/testify/assert"
 )
 
-func withMockedCells(mockedCells []cell, f func()) {
+func withMockedCells(mockedCells []cell.Cell, f func()) {
 	cellsBefore := cells
 	cells = mockedCells
 	f()
@@ -14,7 +15,7 @@ func withMockedCells(mockedCells []cell, f func()) {
 }
 
 func TestGetCandidateCounts(t *testing.T) {
-	withMockedCells([]cell{newCell(0)}, func() {
+	withMockedCells([]cell.Cell{cell.New(0)}, func() {
 		actual := getCandidateCounts([]int{0})
 
 		expected := intIntMap{

@@ -6,10 +6,12 @@ import (
 	"os"
 	"strconv"
 	"time"
+
+	"github.com/logandavies181/sudoku/cell"
 )
 
 var (
-	cells []cell
+	cells []cell.Cell
 	nums  = []int{}
 )
 
@@ -19,15 +21,15 @@ func printPuzzle() {
 		switch {
 		case i%27 == 0:
 			fmt.Println(boxRowDivider)
-			fmt.Printf("|%d", v.value)
+			fmt.Printf("|%d", v.Value)
 		case i%27 == 26:
-			fmt.Printf("%d|\n", v.value)
+			fmt.Printf("%d|\n", v.Value)
 		case i%9 == 0:
-			fmt.Printf("|\n|%d", v.value)
+			fmt.Printf("|\n|%d", v.Value)
 		case i%3 == 0:
-			fmt.Printf("|%d", v.value)
+			fmt.Printf("|%d", v.Value)
 		default:
-			fmt.Print(v.value)
+			fmt.Print(v.Value)
 		}
 	}
 	fmt.Println(boxRowDivider)
@@ -43,8 +45,8 @@ func validatePuzzle() error {
 		}
 
 		valueCounts := newIntIntMap()
-		foreachCellIds(cellIds, func(id int, v cell) {
-			valueCounts.IncrementKey(v.value)
+		foreachCellIds(cellIds, func(id int, v cell.Cell) {
+			valueCounts.IncrementKey(v.Value)
 		})
 
 		for k, v := range valueCounts {
@@ -65,7 +67,7 @@ func validatePuzzle() error {
 		found := false
 		c := cells[id]
 		foreachCandidateInCell(c, func(candidate int) {
-			if c.hasCandidate(candidate) {
+			if c.HasCandidate(candidate) {
 				found = true
 			}
 		})
@@ -157,4 +159,13 @@ func mainE() error {
 	fmt.Println(time.Now().Sub(start))
 
 	return err
+}
+
+func cellsFromInts(nums []int) []cell.Cell {
+	cells := make([]cell.Cell, len(nums))
+	for i, v := range nums {
+		cells[i] = cell.New(v)
+	}
+
+	return cells
 }

@@ -3,11 +3,12 @@ package main
 import (
 	"testing"
 
+	"github.com/logandavies181/sudoku/cell"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestForeachCandidateInCell(t *testing.T) {
-	c := newCell(0)
+	c := cell.New(0)
 
 	count := 0
 	sum := 0

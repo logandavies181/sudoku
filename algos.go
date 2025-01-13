@@ -1,13 +1,17 @@
 package main
 
+import (
+	"github.com/logandavies181/sudoku/cell"
+)
+
 // remove any candidates in each cell whose values can be seen from that cell
 func basicCheckCells() bool {
 	found := false
 	foreachAllUnsolvedCells(func(id int) {
 		seenByCellIds := getAllSeenBy(id)
 		for _, seenByCellId := range seenByCellIds {
-			val := cells[seenByCellId].value
-			if val != 0 && cells[id].removeCandidate(val) {
+			val := cells[seenByCellId].Value
+			if val != 0 && cells[id].RemoveCandidate(val) {
 				found = true
 			}
 		}
@@ -22,8 +26,8 @@ func basicSolveRBCSingle() bool {
 	foreachRBC(func(cellIds []int) {
 		candidateCounts := getCandidateCounts(cellIds)
 
-		foreachFilledCellIds(cellIds, func(id int, v cell) {
-			delete(candidateCounts, v.value)
+		foreachFilledCellIds(cellIds, func(id int, v cell.Cell) {
+			delete(candidateCounts, v.Value)
 		})
 
 		singleCandidates := make([]int, 0)
@@ -39,10 +43,10 @@ func basicSolveRBCSingle() bool {
 
 		for _, can := range singleCandidates {
 			can := can
-			foreachEmptyCellIds(cellIds, func(id int, v cell) {
-				if v.hasCandidate(can) {
+			foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
+				if v.HasCandidate(can) {
 					found = true
-					cells[id].solveAs(can)
+					cells[id].SolveAs(can)
 					basicCheckCells()
 				}
 			})
@@ -98,8 +102,8 @@ func updateSolvedCells() bool {
 	found := false
 
 	foreachAllUnsolvedCells(func(i int) {
-		if cells[i].numCandidates() == 1 {
-			cells[i].solve()
+		if cells[i].NumCandidates() == 1 {
+			cells[i].Solve()
 			found = true
 		}
 	})

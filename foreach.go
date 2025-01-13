@@ -1,5 +1,7 @@
 package main
 
+import "github.com/logandavies181/sudoku/cell"
+
 var (
 	boxes = [][]int{
 		{
@@ -95,7 +97,7 @@ var (
 func foreachUnsolvedCells(cellIds []int, f func(id int)) {
 	for _, v := range cellIds {
 		c := cells[v]
-		if !c.solved() {
+		if !c.Solved() {
 			f(v)
 		}
 	}
@@ -103,29 +105,29 @@ func foreachUnsolvedCells(cellIds []int, f func(id int)) {
 
 func foreachAllUnsolvedCells(f func(id int)) {
 	for i, c := range cells {
-		if !c.solved() {
+		if !c.Solved() {
 			f(i)
 		}
 	}
 }
 
-func foreachEmptyCellIds(cellIds []int, f func(id int, v cell)) {
+func foreachEmptyCellIds(cellIds []int, f func(id int, v cell.Cell)) {
 	for _, id := range cellIds {
-		if cells[id].value == 0 {
+		if cells[id].Value == 0 {
 			f(id, cells[id])
 		}
 	}
 }
 
-func foreachFilledCellIds(cellIds []int, f func(id int, v cell)) {
+func foreachFilledCellIds(cellIds []int, f func(id int, v cell.Cell)) {
 	for _, id := range cellIds {
-		if cells[id].value == 0 {
+		if cells[id].Value == 0 {
 			f(id, cells[id])
 		}
 	}
 }
 
-func foreachCellIds(cellIds []int, f func(id int, v cell)) {
+func foreachCellIds(cellIds []int, f func(id int, v cell.Cell)) {
 	for _, id := range cellIds {
 		f(id, cells[id])
 	}
@@ -155,9 +157,9 @@ func foreachRBC(f func(cellIds []int)) {
 	}
 }
 
-func foreachCandidateInCell(c cell, f func(candidate int)) {
+func foreachCandidateInCell(c cell.Cell, f func(candidate int)) {
 	for i := 1; i < 10; i++ {
-		if c.hasCandidate(i) {
+		if c.HasCandidate(i) {
 			f(i)
 		}
 	}

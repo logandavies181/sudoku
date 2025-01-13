@@ -1,5 +1,7 @@
 package main
 
+import "github.com/logandavies181/sudoku/cell"
+
 type intIntMap map[int]int
 
 func newIntIntMap() intIntMap {
@@ -17,7 +19,7 @@ func (iim intIntMap) IncrementKey(i int) {
 
 func getCandidateCounts(cellIds []int) intIntMap {
 	candidateCounts := newIntIntMap()
-	foreachEmptyCellIds(cellIds, func(id int, v cell) {
+	foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
 		foreachCandidateInCell(cells[id], func(candidate int) {
 			candidateCounts.IncrementKey(candidate)
 		})
@@ -29,7 +31,7 @@ func getCandidateCounts(cellIds []int) intIntMap {
 func locateCandidates(cellIds []int, candidate int) []int {
 	ret := make([]int, 0)
 	for _, v := range cellIds {
-		if cells[v].hasCandidate(candidate) {
+		if cells[v].HasCandidate(candidate) {
 			ret = append(ret, v)
 		}
 	}
@@ -64,7 +66,7 @@ func allInSameRow(cellIds []int) bool {
 func removeCandidatesFromRow(yPos int, candidate int) int {
 	count := 0
 	for _, v := range rows[yPos] {
-		if cells[v].removeCandidate(candidate) {
+		if cells[v].RemoveCandidate(candidate) {
 			count++
 		}
 	}
@@ -74,7 +76,7 @@ func removeCandidatesFromRow(yPos int, candidate int) int {
 func removeCandidatesFromColumn(xPos int, candidate int) int {
 	count := 0
 	for _, v := range columns[xPos] {
-		if cells[v].removeCandidate(candidate) {
+		if cells[v].RemoveCandidate(candidate) {
 			count++
 		}
 	}
@@ -84,7 +86,7 @@ func removeCandidatesFromColumn(xPos int, candidate int) int {
 func addCandidateToCells(cellIds []int, candidate int) int {
 	count := 0
 	for _, v := range cellIds {
-		cells[v].addCandidate(candidate)
+		cells[v].AddCandidate(candidate)
 		count++
 	}
 	return count

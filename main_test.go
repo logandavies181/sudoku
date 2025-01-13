@@ -36,7 +36,7 @@ func Test_CheckBoxLinearCandidates_Basic(t *testing.T) {
 	updated := checkBoxLinearCandidates()
 
 	assert.True(t, updated)
-	assert.True(t, !cells[3].hasCandidate(7))
+	assert.True(t, !cells[3].HasCandidate(7))
 }
 
 func Test_CheckBoxLinearCandidates_NoopCompletedPuzzle(t *testing.T) {
