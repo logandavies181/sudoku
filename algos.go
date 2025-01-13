@@ -3,10 +3,11 @@ package main
 // remove any candidates in each cell whose values can be seen from that cell
 func basicCheckCells() bool {
 	found := false
-	foreachUnsolvedCells(func(id int, v cell) {
+	foreachAllUnsolvedCells(func(id int) {
 		seenByCellIds := getAllSeenBy(id)
 		for _, seenByCellId := range seenByCellIds {
-			if v.removeCandidate(cells[seenByCellId].value) {
+			val := cells[seenByCellId].value
+			if val != 0 && cells[id].removeCandidate(val) {
 				found = true
 			}
 		}
@@ -39,7 +40,7 @@ func basicSolveRBCSingle() bool {
 		for _, can := range singleCandidates {
 			can := can
 			foreachEmptyCellIds(cellIds, func(id int, v cell) {
-				if containsCandidate(v.candidates, can) {
+				if v.hasCandidate(can) {
 					found = true
 					cells[id].solveAs(can)
 					basicCheckCells()
@@ -55,28 +56,35 @@ func basicSolveRBCSingle() bool {
 func checkBoxLinearCandidates() bool {
 	found := false
 	foreachBox(func(cellIds []int) {
-		foreachEmptyCellIds(cellIds, func(id int, v cell) {
+		foreachUnsolvedCells(cellIds, func(id int) {
 			candidateCounts := getCandidateCounts(cellIds)
 			for candidate, count := range candidateCounts {
 				if count > 3 || count < 2 {
-					// 1 is solved, 4 is too many
+					// 0 is solved, 4 is too many
 					continue
 				}
-
-				found = true
 
 				locations := locateCandidates(cellIds, candidate)
 
 				if allInSameRow(locations) {
 					rowId := yPos(locations[0])
-					removeCandidatesFromRow(rowId, candidate)
-					addCandidateToCells(locations, candidate)
+
+					// TODO: must be a better way
+					numRemoved := removeCandidatesFromRow(rowId, candidate)
+					numRestored := addCandidateToCells(locations, candidate)
+					if numRemoved > numRestored {
+						found = true
+					}
 				}
 
 				if allInSameColumn(locations) {
 					colId := xPos(locations[0])
-					removeCandidatesFromColumn(colId, candidate)
-					addCandidateToCells(locations, candidate)
+
+					numRemoved := removeCandidatesFromColumn(colId, candidate)
+					numRestored := addCandidateToCells(locations, candidate)
+					if numRemoved > numRestored {
+						found = true
+					}
 				}
 			}
 		})
@@ -89,8 +97,8 @@ func checkBoxLinearCandidates() bool {
 func updateSolvedCells() bool {
 	found := false
 
-	foreachUnsolvedCells(func(i int, v cell) {
-		if cells[i].numCandidates() == 1 && cells[i].value == 0 {
+	foreachAllUnsolvedCells(func(i int) {
+		if cells[i].numCandidates() == 1 {
 			cells[i].solve()
 			found = true
 		}

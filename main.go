@@ -11,7 +11,6 @@ import (
 var (
 	cells []cell
 	nums  = []int{}
-	start = time.Now()
 )
 
 func printPuzzle() {
@@ -57,17 +56,19 @@ func validatePuzzle() error {
 	})
 
 	// check for cells with no candidates
-	foreachUnsolvedCells(func(id int, v cell) {
+	// fixme: why tho?
+	foreachAllUnsolvedCells(func(id int) {
 		if err != nil {
 			return
 		}
 
 		found := false
-		for _, v := range v.candidates {
-			if v == 1 {
+		c := cells[id]
+		foreachCandidateInCell(c, func(candidate int) {
+			if c.hasCandidate(candidate) {
 				found = true
 			}
-		}
+		})
 
 		if !found {
 			err = fmt.Errorf("no available candidates in cell: %d", id)
@@ -130,9 +131,11 @@ func mainE() error {
 		return fmt.Errorf("could not read input file: %w", err)
 	}
 
+	start := time.Now()
+
 	for {
 		shouldBreak := true
-		for _, alg := range []func() bool {
+		for _, alg := range []func() bool{
 			basicCheckCells,
 			basicSolveRBCSingle,
 			checkBoxLinearCandidates,
