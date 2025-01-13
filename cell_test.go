@@ -41,6 +41,17 @@ func TestRemoveCandidate(t *testing.T) {
 	assert.Equal(t, uint16(0b111111110), c.candidates, toBinaryString(c.candidates))
 }
 
+func TestRemoveCandidate_NoChangeIfAlreadyRemoved(t *testing.T) {
+	c := newCell(0)
+
+	changedFirst := c.removeCandidate(1)
+	changedSecond := c.removeCandidate(1)
+
+	assert.True(t, changedFirst)
+	assert.False(t, changedSecond)
+	assert.Equal(t, uint16(0b111111110), c.candidates, toBinaryString(c.candidates))
+}
+
 func TestNumCandidates(t *testing.T) {
 	c := newCell(0)
 

@@ -1,15 +1,19 @@
 package main
 
+import "fmt"
+
 // remove any candidates in each cell whose values can be seen from that cell
 func basicCheckCells() bool {
 	found := false
-	foreachAllUnsolvedCells(func(id int, v cell) {
+	foreachAllUnsolvedCells(func(id int) {
 		seenByCellIds := getAllSeenBy(id)
-		foreachUnsolvedCells(seenByCellIds, func(id int, v cell) {
-			if v.removeCandidate(cells[seenByCellId].value) {
+		for _, seenByCellId := range seenByCellIds {
+			val := cells[seenByCellId].value
+			if val != 0 && cells[id].removeCandidate(val) {
+				fmt.Printf("removed %d from %d\n", val, id)
 				found = true
 			}
-		})
+		}
 	})
 
 	return found
@@ -89,7 +93,7 @@ func checkBoxLinearCandidates() bool {
 func updateSolvedCells() bool {
 	found := false
 
-	foreachAllUnsolvedCells(func(i int, v cell) {
+	foreachAllUnsolvedCells(func(i int) {
 		if cells[i].numCandidates() == 1 && cells[i].value == 0 {
 			cells[i].solve()
 			found = true

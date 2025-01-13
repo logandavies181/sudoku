@@ -39,11 +39,11 @@ func (c *cell) addCandidate(n int) {
 
 func (c *cell) removeCandidate(n int) bool {
 	if n == 0 {
-		panic("tried to remove 0")
+		return false
 	}
 
 	initial := c.candidates
-	c.candidates ^= (1 << (n - 1))
+	c.candidates &= ^(1 << (n - 1))
 	return c.candidates != initial
 }
 

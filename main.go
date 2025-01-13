@@ -11,7 +11,6 @@ import (
 var (
 	cells []cell
 	nums  = []int{}
-	start = time.Now()
 )
 
 func printPuzzle() {
@@ -58,14 +57,15 @@ func validatePuzzle() error {
 
 	// check for cells with no candidates
 	// fixme: why tho?
-	foreachUnsolvedCells(func(id int, v cell) {
+	foreachAllUnsolvedCells(func(id int) {
 		if err != nil {
 			return
 		}
 
 		found := false
-		foreachCandidateInCell(v, func(candidate int) {
-			if v.hasCandidate(candidate) {
+		c := cells[id]
+		foreachCandidateInCell(c, func(candidate int) {
+			if c.hasCandidate(candidate) {
 				found = true
 			}
 		})
@@ -131,6 +131,8 @@ func mainE() error {
 		return fmt.Errorf("could not read input file: %w", err)
 	}
 
+	start := time.Now()
+
 	for {
 		shouldBreak := true
 		for _, alg := range []func() bool{
@@ -139,6 +141,7 @@ func mainE() error {
 			//checkBoxLinearCandidates,
 			//updateSolvedCells,
 		} {
+			fmt.Println("looping")
 			if alg() {
 				shouldBreak = false
 			}
