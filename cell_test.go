@@ -60,6 +60,33 @@ func TestNumCandidates(t *testing.T) {
 	assert.Equal(t, 9, actual)
 }
 
+func TestNumCandidates_SomeRemoved(t *testing.T) {
+	c := newCell(0)
+
+	c.removeCandidate(1)
+	c.removeCandidate(2)
+	actual := c.numCandidates()
+
+	assert.Equal(t, 7, actual)
+}
+
+func TestNumCandidates_NewSolved(t *testing.T) {
+	c := newCell(1)
+
+	actual := c.numCandidates()
+
+	assert.Equal(t, 0, actual)
+}
+
+func TestNumCandidates_SolvedLater(t *testing.T) {
+	c := newCell(0)
+	c.solveAs(1)
+
+	actual := c.numCandidates()
+
+	assert.Equal(t, 0, actual)
+}
+
 func TestListCandidates(t *testing.T) {
 	c := newCell(0)
 
