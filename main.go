@@ -22,18 +22,18 @@ func mainE() error {
 		return fmt.Errorf("file name required")
 	}
 
-	err := sudoku.InitializeFromFile(os.Args[1])
+	puzzle, err := sudoku.InitializeFromFile(os.Args[1])
 	if err != nil {
 		return fmt.Errorf("could not read input file: %w", err)
 	}
 
 	start := time.Now()
 
-	err = sudoku.Solve()
+	err = puzzle.Solve()
 
 	fmt.Println(time.Now().Sub(start))
 
-	sudoku.PrintPuzzle()
+	puzzle.Print()
 
 	return err
 }

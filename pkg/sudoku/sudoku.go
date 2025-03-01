@@ -9,12 +9,10 @@ import (
 	"github.com/logandavies181/sudoku/pkg/cell"
 )
 
-var (
-	cells []cell.Cell
-)
+type Puzzle []cell.Cell
 
-func solveCellAs(id int, val int) {
-	cells[id].SolveAs(val)
+func (p Puzzle) solveCellAs(id int, val int) {
+	p[id].SolveAs(val)
 	/*
 	stack.Push(stack.SolveStackItem{
 		Index: id,
@@ -25,8 +23,8 @@ func solveCellAs(id int, val int) {
 }
 
 // todo: make this safe
-func unsafeGuess(id int, val int) {
-	cells[id].SolveAs(val)
+func (p Puzzle) unsafeGuess(id int, val int) {
+	p[id].SolveAs(val)
 	/*
 	stack.Push(stack.SolveStackItem{
 		Index: id,
@@ -36,14 +34,14 @@ func unsafeGuess(id int, val int) {
 	*/
 }
 
-func Solve() error {
+func (p Puzzle) Solve() error {
 	for {
 		shouldBreak := true
 		for _, alg := range []func() bool{
-			basicCheckCells,
-			basicSolveRBCSingle,
-			checkBoxLinearCandidates,
-			updateSolvedCells,
+			p.basicCheckCells,
+			p.basicSolveRBCSingle,
+			p.checkBoxLinearCandidates,
+			p.updateSolvedCells,
 		} {
 			if alg() {
 				shouldBreak = false
@@ -55,18 +53,18 @@ func Solve() error {
 		}
 	}
 
-	return ValidatePuzzle()
+	return p.Validate()
 }
 
-func InitializeFromFile(fname string) error {
+func InitializeFromFile(fname string) (*Puzzle, error) {
 	f, err := os.Open(fname)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	lines, err := csv.NewReader(f).ReadAll()
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	nums := make([]int, 81)
@@ -75,7 +73,7 @@ func InitializeFromFile(fname string) error {
 		for _, v := range line {
 			nums[count], err = strconv.Atoi(v)
 			if err != nil {
-				return err
+				return nil, err
 			}
 
 			count++
@@ -83,27 +81,27 @@ func InitializeFromFile(fname string) error {
 	}
 
 	if count != 81 {
-		return fmt.Errorf("bad input file. incorrect number of cells")
+		return nil, fmt.Errorf("bad input file. incorrect number of cells")
 	}
 
-	cells = cellsFromInts(nums)
+	p := newFromInts(nums)
 
-	basicCheckCells()
+	p.basicCheckCells()
 
-	return nil
+	return &p, nil
 }
 
-func ValidatePuzzle() error {
+func (p Puzzle) Validate() error {
 	var err error
 
 	// check for duplicates in RBC
-	foreachRBC(func(cellIds []int) {
+	p.foreachRBC(func(cellIds []int) {
 		if err != nil {
 			return
 		}
 
 		valueCounts := newIntIntMap()
-		foreachCellIds(cellIds, func(id int, v cell.Cell) {
+		p.foreachCellIds(cellIds, func(id int, v cell.Cell) {
 			valueCounts.IncrementKey(v.Value)
 		})
 
@@ -117,14 +115,14 @@ func ValidatePuzzle() error {
 
 	// check for cells with no candidates
 	// fixme: why tho?
-	foreachAllUnsolvedCells(func(id int) {
+	p.foreachAllUnsolvedCells(func(id int) {
 		if err != nil {
 			return
 		}
 
 		found := false
-		c := cells[id]
-		foreachCandidateInCell(c, func(candidate int) {
+		c := p[id]
+		p.foreachCandidateInCell(c, func(candidate int) {
 			if c.HasCandidate(candidate) {
 				found = true
 			}
@@ -138,7 +136,7 @@ func ValidatePuzzle() error {
 	return err
 }
 
-func cellsFromInts(nums []int) []cell.Cell {
+func newFromInts(nums []int) Puzzle {
 	cells := make([]cell.Cell, len(nums))
 	for i, v := range nums {
 		cells[i] = cell.New(v)

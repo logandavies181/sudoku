@@ -5,13 +5,13 @@ import (
 )
 
 // remove any candidates in each cell whose values can be seen from that cell
-func basicCheckCells() bool {
+func (p Puzzle) basicCheckCells() bool {
 	found := false
-	foreachAllUnsolvedCells(func(id int) {
-		seenByCellIds := getAllSeenBy(id)
+	p.foreachAllUnsolvedCells(func(id int) {
+		seenByCellIds := p.getAllSeenBy(id)
 		for _, seenByCellId := range seenByCellIds {
-			val := cells[seenByCellId].Value
-			if val != 0 && cells[id].RemoveCandidate(val) {
+			val := p[seenByCellId].Value
+			if val != 0 && p[id].RemoveCandidate(val) {
 				found = true
 			}
 		}
@@ -21,13 +21,13 @@ func basicCheckCells() bool {
 }
 
 // only check cells seen by a given cell
-func basicCheckCellsSeenBy(id int) bool {
+func (p Puzzle) basicCheckCellsSeenBy(id int) bool {
 	found := false
-	foreachUnsolvedSeenBy(id, func(id int) {
-		seenByCellIds := getAllSeenBy(id)
+	p.foreachUnsolvedSeenBy(id, func(id int) {
+		seenByCellIds := p.getAllSeenBy(id)
 		for _, seenByCellId := range seenByCellIds {
-			val := cells[seenByCellId].Value
-			if val != 0 && cells[id].RemoveCandidate(val) {
+			val := p[seenByCellId].Value
+			if val != 0 && p[id].RemoveCandidate(val) {
 				found = true
 			}
 		}
@@ -37,12 +37,12 @@ func basicCheckCellsSeenBy(id int) bool {
 }
 
 // check only one valid spot in the r/b/c for a given number
-func basicSolveRBCSingle() bool {
+func (p Puzzle) basicSolveRBCSingle() bool {
 	found := false
-	foreachRBC(func(cellIds []int) {
-		candidateCounts := getCandidateCounts(cellIds)
+	p.foreachRBC(func(cellIds []int) {
+		candidateCounts := p.getCandidateCounts(cellIds)
 
-		foreachFilledCellIds(cellIds, func(id int, v cell.Cell) {
+		p.foreachFilledCellIds(cellIds, func(id int, v cell.Cell) {
 			delete(candidateCounts, v.Value)
 		})
 
@@ -59,11 +59,11 @@ func basicSolveRBCSingle() bool {
 
 		for _, can := range singleCandidates {
 			can := can
-			foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
+			p.foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
 				if v.HasCandidate(can) {
 					found = true
-					solveCellAs(id, can)
-					basicCheckCellsSeenBy(id)
+					p.solveCellAs(id, can)
+					p.basicCheckCellsSeenBy(id)
 				}
 			})
 		}
@@ -73,25 +73,25 @@ func basicSolveRBCSingle() bool {
 }
 
 // check for 2/3 lined up candidates within a box
-func checkBoxLinearCandidates() bool {
+func (p Puzzle) checkBoxLinearCandidates() bool {
 	found := false
-	foreachBox(func(cellIds []int) {
-		foreachUnsolvedCells(cellIds, func(id int) {
-			candidateCounts := getCandidateCounts(cellIds)
+	p.foreachBox(func(cellIds []int) {
+		p.foreachUnsolvedCells(cellIds, func(id int) {
+			candidateCounts := p.getCandidateCounts(cellIds)
 			for candidate, count := range candidateCounts {
 				if count > 3 || count < 2 {
 					// 0 is solved, 4 is too many
 					continue
 				}
 
-				locations := locateCandidates(cellIds, candidate)
+				locations := p.locateCandidates(cellIds, candidate)
 
 				if allInSameRow(locations) {
 					rowId := yPos(locations[0])
 
 					// TODO: must be a better way
-					numRemoved := removeCandidatesFromRow(rowId, candidate)
-					numRestored := addCandidateToCells(locations, candidate)
+					numRemoved := p.removeCandidatesFromRow(rowId, candidate)
+					numRestored := p.addCandidateToCells(locations, candidate)
 					if numRemoved > numRestored {
 						found = true
 					}
@@ -100,8 +100,8 @@ func checkBoxLinearCandidates() bool {
 				if allInSameColumn(locations) {
 					colId := xPos(locations[0])
 
-					numRemoved := removeCandidatesFromColumn(colId, candidate)
-					numRestored := addCandidateToCells(locations, candidate)
+					numRemoved := p.removeCandidatesFromColumn(colId, candidate)
+					numRestored := p.addCandidateToCells(locations, candidate)
 					if numRemoved > numRestored {
 						found = true
 					}
@@ -114,13 +114,13 @@ func checkBoxLinearCandidates() bool {
 }
 
 // update solve any cells that have only one candidate remaining
-func updateSolvedCells() bool {
+func (p Puzzle) updateSolvedCells() bool {
 	found := false
 
-	foreachAllUnsolvedCells(func(i int) {
-		if cells[i].NumCandidates() == 1 {
-			cans := cells[i].ListCandidates()
-			solveCellAs(i, cans[0])
+	p.foreachAllUnsolvedCells(func(i int) {
+		if p[i].NumCandidates() == 1 {
+			cans := p[i].ListCandidates()
+			p.solveCellAs(i, cans[0])
 			found = true
 		}
 	})

@@ -14,8 +14,8 @@ func generateRandomCandidates() []int {
 	return numbers
 }
 
-func generateThreeBoxes() {
-	cells = make([]cell.Cell, 81)
+func newCompletedPuzzle() Puzzle {
+	cells := make(Puzzle, 81)
 	for i := range cells {
 		cells[i] = cell.New(0)
 	}
@@ -25,15 +25,17 @@ func generateThreeBoxes() {
 		cells[i] = cell.New(v)
 	}
 
-	basicCheckCells()
+	cells.basicCheckCells()
 
-	backtrackingSolve()
+	cells.backtrackingSolve()
 
-	PrintPuzzle()
+	cells.Print()
+
+	return cells
 }
 
-func getFirstUnsolvedIndex() int {
-	for i, v := range cells {
+func (p Puzzle) getFirstUnsolvedIndex() int {
+	for i, v := range p {
 		if !v.Solved() {
 			return i
 		}
@@ -44,32 +46,32 @@ func getFirstUnsolvedIndex() int {
 
 // returns true if no unsolved cells have no candidates.
 // solves any cells that only have one candidate because why not.
-func checkNoUnsolveableCells() bool {
+func (p Puzzle) checkNoUnsolveableCells() bool {
 	found := false
-	foreachAllUnsolvedCells(func(id int) {
-		candidates := cells[id].ListCandidates()
+	p.foreachAllUnsolvedCells(func(id int) {
+		candidates := p[id].ListCandidates()
 		numCandidates := len(candidates)
 		switch numCandidates {
 		case 0:
 			found = true
 		case 1:
-			solveCellAs(id, candidates[0])
+			p.solveCellAs(id, candidates[0])
 		}
 	})
 
 	return !found
 }
 
-func backtrackingSolve() {
-	guessIndex := getFirstUnsolvedIndex()
+func (p Puzzle) backtrackingSolve() {
+	guessIndex := p.getFirstUnsolvedIndex()
 	if guessIndex > 0 {
-		cans := cells[guessIndex].ListCandidates()
+		cans := p[guessIndex].ListCandidates()
 		canOrder := rand.Perm(len(cans))
 		for _, v := range canOrder {
-			unsafeGuess(guessIndex, v)
-			basicCheckCellsSeenBy(guessIndex)
-			if checkNoUnsolveableCells() {
-				backtrackingSolve()
+			p.unsafeGuess(guessIndex, v)
+			p.basicCheckCellsSeenBy(guessIndex)
+			if p.checkNoUnsolveableCells() {
+				p.backtrackingSolve()
 			} else {
 				
 			}

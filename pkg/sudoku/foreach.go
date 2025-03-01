@@ -94,86 +94,86 @@ var (
 	}
 )
 
-func foreachUnsolvedCells(cellIds []int, f func(id int)) {
+func (p Puzzle) foreachUnsolvedCells(cellIds []int, f func(id int)) {
 	for _, v := range cellIds {
-		c := cells[v]
+		c := p[v]
 		if !c.Solved() {
 			f(v)
 		}
 	}
 }
 
-func foreachAllUnsolvedCells(f func(id int)) {
-	for i, c := range cells {
+func (p Puzzle) foreachAllUnsolvedCells(f func(id int)) {
+	for i, c := range p {
 		if !c.Solved() {
 			f(i)
 		}
 	}
 }
 
-func foreachSeenBy(id int, f func(id int)) {
-	seenByCells := getAllSeenBy(id)
+func (p Puzzle) foreachSeenBy(id int, f func(id int)) {
+	seenByCells := p.getAllSeenBy(id)
 	for _, v := range seenByCells {
 		f(v)
 	}
 }
 
-func foreachUnsolvedSeenBy(id int, f func(id int)) {
-	seenByCells := getAllSeenBy(id)
+func (p Puzzle) foreachUnsolvedSeenBy(id int, f func(id int)) {
+	seenByCells := p.getAllSeenBy(id)
 	for _, v := range seenByCells {
-		if !cells[v].Solved() {
+		if !p[v].Solved() {
 			f(v)
 		}
 	}
 }
 
-func foreachEmptyCellIds(cellIds []int, f func(id int, v cell.Cell)) {
+func (p Puzzle) foreachEmptyCellIds(cellIds []int, f func(id int, v cell.Cell)) {
 	for _, id := range cellIds {
-		if cells[id].Value == 0 {
-			f(id, cells[id])
+		if p[id].Value == 0 {
+			f(id, p[id])
 		}
 	}
 }
 
-func foreachFilledCellIds(cellIds []int, f func(id int, v cell.Cell)) {
+func (p Puzzle) foreachFilledCellIds(cellIds []int, f func(id int, v cell.Cell)) {
 	for _, id := range cellIds {
-		if cells[id].Value == 0 {
-			f(id, cells[id])
+		if p[id].Value == 0 {
+			f(id, p[id])
 		}
 	}
 }
 
-func foreachCellIds(cellIds []int, f func(id int, v cell.Cell)) {
+func (p Puzzle) foreachCellIds(cellIds []int, f func(id int, v cell.Cell)) {
 	for _, id := range cellIds {
-		f(id, cells[id])
+		f(id, p[id])
 	}
 }
 
-func foreach(iterator [][]int, f func(cellIds []int)) {
+func (p Puzzle) foreach(iterator [][]int, f func(cellIds []int)) {
 	for _, item := range iterator {
 		f(item)
 	}
 }
 
-func foreachRow(f func(cellIds []int)) {
-	foreach(rows, f)
+func (p Puzzle) foreachRow(f func(cellIds []int)) {
+	p.foreach(rows, f)
 }
 
-func foreachBox(f func(cellIds []int)) {
-	foreach(boxes, f)
+func (p Puzzle) foreachBox(f func(cellIds []int)) {
+	p.foreach(boxes, f)
 }
 
-func foreachColumn(f func(cellIds []int)) {
-	foreach(columns, f)
+func (p Puzzle) foreachColumn(f func(cellIds []int)) {
+	p.foreach(columns, f)
 }
 
-func foreachRBC(f func(cellIds []int)) {
-	for _, fe := range []func(func(cellIds []int)){foreachRow, foreachBox, foreachColumn} {
+func (p Puzzle) foreachRBC(f func(cellIds []int)) {
+	for _, fe := range []func(func(cellIds []int)){p.foreachRow, p.foreachBox, p.foreachColumn} {
 		fe(f)
 	}
 }
 
-func foreachCandidateInCell(c cell.Cell, f func(candidate int)) {
+func (p Puzzle) foreachCandidateInCell(c cell.Cell, f func(candidate int)) {
 	for i := 1; i < 10; i++ {
 		if c.HasCandidate(i) {
 			f(i)

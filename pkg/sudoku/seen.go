@@ -1,10 +1,10 @@
 package sudoku
 
-func getAllSeenBy(src int) []int {
+func (p Puzzle) getAllSeenBy(src int) []int {
 	ret := make([]int, 20)
 	count := 0
 
-	for i := range cells {
+	for i := range p {
 		if canSee(src, i) && !(i == src) {
 			ret[count] = i
 			count++

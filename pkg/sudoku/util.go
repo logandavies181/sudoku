@@ -21,10 +21,10 @@ func (iim intIntMap) IncrementKey(i int) {
 	}
 }
 
-func getCandidateCounts(cellIds []int) intIntMap {
+func (p Puzzle) getCandidateCounts(cellIds []int) intIntMap {
 	candidateCounts := newIntIntMap()
-	foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
-		foreachCandidateInCell(cells[id], func(candidate int) {
+	p.foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
+		p.foreachCandidateInCell(p[id], func(candidate int) {
 			candidateCounts.IncrementKey(candidate)
 		})
 	})
@@ -32,10 +32,10 @@ func getCandidateCounts(cellIds []int) intIntMap {
 	return candidateCounts
 }
 
-func locateCandidates(cellIds []int, candidate int) []int {
+func (p Puzzle) locateCandidates(cellIds []int, candidate int) []int {
 	ret := make([]int, 0)
 	for _, v := range cellIds {
-		if cells[v].HasCandidate(candidate) {
+		if p[v].HasCandidate(candidate) {
 			ret = append(ret, v)
 		}
 	}
@@ -67,38 +67,38 @@ func allInSameRow(cellIds []int) bool {
 	})
 }
 
-func removeCandidatesFromRow(yPos int, candidate int) int {
+func (p Puzzle) removeCandidatesFromRow(yPos int, candidate int) int {
 	count := 0
 	for _, v := range rows[yPos] {
-		if cells[v].RemoveCandidate(candidate) {
+		if p[v].RemoveCandidate(candidate) {
 			count++
 		}
 	}
 	return count
 }
 
-func removeCandidatesFromColumn(xPos int, candidate int) int {
+func (p Puzzle) removeCandidatesFromColumn(xPos int, candidate int) int {
 	count := 0
 	for _, v := range columns[xPos] {
-		if cells[v].RemoveCandidate(candidate) {
+		if p[v].RemoveCandidate(candidate) {
 			count++
 		}
 	}
 	return count
 }
 
-func addCandidateToCells(cellIds []int, candidate int) int {
+func (p Puzzle) addCandidateToCells(cellIds []int, candidate int) int {
 	count := 0
 	for _, v := range cellIds {
-		cells[v].AddCandidate(candidate)
+		p[v].AddCandidate(candidate)
 		count++
 	}
 	return count
 }
 
-func PrintPuzzle() {
+func (p Puzzle) Print() {
 	boxRowDivider := "-------------"
-	for i, v := range cells {
+	for i, v := range p {
 		switch {
 		case i%27 == 0:
 			fmt.Println(boxRowDivider)
