@@ -23,7 +23,7 @@ func New(n int) Cell {
 
 func (c *Cell) Solved() bool {
 	if (c.Value != 0) != (c.candidates == 0) {
-		panic("have either value or candidates")
+		panic("must have either value or candidates")
 	}
 
 	return c.Value != 0 && c.candidates == 0
