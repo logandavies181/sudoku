@@ -8,7 +8,6 @@ import (
 	"github.com/logandavies181/sudoku/pkg/sudoku"
 )
 
-
 func main() {
 	err := mainE()
 	if err != nil {

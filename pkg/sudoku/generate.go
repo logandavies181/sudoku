@@ -73,7 +73,7 @@ func (p Puzzle) backtrackingSolve() {
 			if p.checkNoUnsolveableCells() {
 				p.backtrackingSolve()
 			} else {
-				
+
 			}
 		}
 	}

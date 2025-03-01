@@ -14,11 +14,11 @@ type Puzzle []cell.Cell
 func (p Puzzle) solveCellAs(id int, val int) {
 	p[id].SolveAs(val)
 	/*
-	stack.Push(stack.SolveStackItem{
-		Index: id,
-		Value: val,
-		Guess: false,
-	})
+		stack.Push(stack.SolveStackItem{
+			Index: id,
+			Value: val,
+			Guess: false,
+		})
 	*/
 }
 
@@ -26,11 +26,11 @@ func (p Puzzle) solveCellAs(id int, val int) {
 func (p Puzzle) unsafeGuess(id int, val int) {
 	p[id].SolveAs(val)
 	/*
-	stack.Push(stack.SolveStackItem{
-		Index: id,
-		Value: val,
-		Guess: true,
-	})
+		stack.Push(stack.SolveStackItem{
+			Index: id,
+			Value: val,
+			Guess: true,
+		})
 	*/
 }
 
