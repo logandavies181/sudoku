@@ -62,9 +62,8 @@ func basicSolveRBCSingle() bool {
 			foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
 				if v.HasCandidate(can) {
 					found = true
-					cells[id].SolveAs(can)
+					solveCellAs(id, can)
 					basicCheckCellsSeenBy(id)
-					// basicCheckCells()
 				}
 			})
 		}
@@ -120,7 +119,8 @@ func updateSolvedCells() bool {
 
 	foreachAllUnsolvedCells(func(i int) {
 		if cells[i].NumCandidates() == 1 {
-			cells[i].Solve()
+			cans := cells[i].ListCandidates()
+			solveCellAs(i, cans[0])
 			found = true
 		}
 	})

@@ -1,6 +1,10 @@
 package cell
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/logandavies181/sudoku/pkg/stack"
+)
 
 type Cell struct {
 	Value      int

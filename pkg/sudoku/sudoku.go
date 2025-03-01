@@ -13,6 +13,29 @@ var (
 	cells []cell.Cell
 )
 
+func solveCellAs(id int, val int) {
+	cells[id].SolveAs(val)
+	/*
+	stack.Push(stack.SolveStackItem{
+		Index: id,
+		Value: val,
+		Guess: false,
+	})
+	*/
+}
+
+// todo: make this safe
+func unsafeGuess(id int, val int) {
+	cells[id].SolveAs(val)
+	/*
+	stack.Push(stack.SolveStackItem{
+		Index: id,
+		Value: val,
+		Guess: true,
+	})
+	*/
+}
+
 func Solve() error {
 	for {
 		shouldBreak := true
