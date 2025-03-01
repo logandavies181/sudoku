@@ -30,26 +30,26 @@ func TestCanSee_YPos(t *testing.T) {
 }
 
 func Test_CheckBoxLinearCandidates_Basic(t *testing.T) {
-	err := InitializeFromFile("../../test/checkBoxLinearCandidates.txt")
+	p, err := InitializeFromFile("../../test/checkBoxLinearCandidates.txt")
 	assert.NoError(t, err)
 
-	updated := checkBoxLinearCandidates()
+	updated := p.checkBoxLinearCandidates()
 
 	assert.True(t, updated)
-	assert.True(t, !cells[3].HasCandidate(7))
+	assert.True(t, !p[3].HasCandidate(7))
 }
 
 func Test_CheckBoxLinearCandidates_NoopCompletedPuzzle(t *testing.T) {
-	err := InitializeFromFile("../../test/completed.txt")
+	p, err := InitializeFromFile("../../test/completed.txt")
 	assert.NoError(t, err)
 
-	updated := checkBoxLinearCandidates()
+	updated := p.checkBoxLinearCandidates()
 
 	assert.False(t, updated)
 }
 
 func TestGetCandidateCounts_NoneCompletedPuzzle(t *testing.T) {
-	err := InitializeFromFile("../../test/completed.txt")
+	_, err := InitializeFromFile("../../test/completed.txt")
 	assert.NoError(t, err)
 
 	// TODO

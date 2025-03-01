@@ -11,6 +11,14 @@ import (
 
 type Puzzle []cell.Cell
 
+func newEmptyPuzzle() Puzzle {
+	p := make(Puzzle, 81)
+	for i := range p {
+		p[i] = cell.New(0)
+	}
+	return p
+}
+
 func (p Puzzle) solveCellAs(id int, val int) {
 	p[id].SolveAs(val)
 	/*
@@ -56,7 +64,7 @@ func (p Puzzle) Solve() error {
 	return p.Validate()
 }
 
-func InitializeFromFile(fname string) (*Puzzle, error) {
+func InitializeFromFile(fname string) (Puzzle, error) {
 	f, err := os.Open(fname)
 	if err != nil {
 		return nil, err
@@ -88,7 +96,7 @@ func InitializeFromFile(fname string) (*Puzzle, error) {
 
 	p.basicCheckCells()
 
-	return &p, nil
+	return p, nil
 }
 
 func (p Puzzle) Validate() error {
@@ -122,7 +130,7 @@ func (p Puzzle) Validate() error {
 
 		found := false
 		c := p[id]
-		p.foreachCandidateInCell(c, func(candidate int) {
+		foreachCandidateInCell(c, func(candidate int) {
 			if c.HasCandidate(candidate) {
 				found = true
 			}

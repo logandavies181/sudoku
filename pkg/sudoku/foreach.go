@@ -173,7 +173,7 @@ func (p Puzzle) foreachRBC(f func(cellIds []int)) {
 	}
 }
 
-func (p Puzzle) foreachCandidateInCell(c cell.Cell, f func(candidate int)) {
+func foreachCandidateInCell(c cell.Cell, f func(candidate int)) {
 	for i := 1; i < 10; i++ {
 		if c.HasCandidate(i) {
 			f(i)

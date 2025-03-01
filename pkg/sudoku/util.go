@@ -24,7 +24,7 @@ func (iim intIntMap) IncrementKey(i int) {
 func (p Puzzle) getCandidateCounts(cellIds []int) intIntMap {
 	candidateCounts := newIntIntMap()
 	p.foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
-		p.foreachCandidateInCell(p[id], func(candidate int) {
+		foreachCandidateInCell(p[id], func(candidate int) {
 			candidateCounts.IncrementKey(candidate)
 		})
 	})
