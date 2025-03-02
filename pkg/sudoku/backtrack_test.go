@@ -7,7 +7,11 @@ import (
 )
 
 func TestGeneratePuzzle(t *testing.T) {
-	newCompletedPuzzle()
+	p := newCompletedPuzzle()
+
+	assert.NotNil(t, p)
+	assert.NoError(t, p.Validate())
+	assert.Equal(t, -1, p.getFirstUnsolvedIndex())
 }
 
 func TestClone(t *testing.T) {
