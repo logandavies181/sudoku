@@ -3,6 +3,7 @@ package sudoku
 import (
 	"fmt"
 	"math/rand"
+	"time"
 
 	"github.com/logandavies181/sudoku/pkg/cell"
 )
@@ -16,7 +17,6 @@ func generateRandomCandidates() []int {
 }
 
 func newCompletedPuzzle() Puzzle {
-
 	cells := make(Puzzle, 81)
 	for i := range cells {
 		cells[i] = cell.New(0)
@@ -27,11 +27,12 @@ func newCompletedPuzzle() Puzzle {
 		cells[i] = cell.New(v)
 	}
 
-	cells.basicCheckCells()
-
-	cells, _ = cells.backtrackingSolve()
+	start := time.Now()
+	cells, _ = cells.BacktrackingSolve()
 
 	cells.Print()
+
+	fmt.Println(time.Now().Sub(start))
 
 	return cells
 }
@@ -79,14 +80,17 @@ func (p Puzzle) checkNoUnsolveableCells() bool {
 	return !found
 }
 
-func (p Puzzle) backtrackingSolve() (Puzzle, bool) {
-	defer func() {
-		if r := recover(); r != nil {
-			p.Print()
-			fmt.Println(r)
-		}
-	}()
+func (p Puzzle) BacktrackingSolve() (Puzzle, error) {
+	p.basicCheckCells()
+	p, ok := p.backtrackingSolve()
+	if !ok {
+		p.Print()
+		return nil, fmt.Errorf("could not solve with backtracking")
+	}
+	return p, nil
+}
 
+func (p Puzzle) backtrackingSolve() (Puzzle, bool) {
 	guessIndex := p.getFirstUnsolvedIndex()
 	switch guessIndex {
 	case -1:
@@ -94,18 +98,17 @@ func (p Puzzle) backtrackingSolve() (Puzzle, bool) {
 	case -2:
 		return nil, false
 	}
-	if guessIndex > 0 {
-		cans := p[guessIndex].ListCandidates()
-		canOrder := rand.Perm(len(cans))
-		for _, v := range canOrder {
-			q := p.clone()
-			can := cans[v]
-			q.unsafeGuess(guessIndex, can)
-			q.basicCheckCellsSeenBy(guessIndex)
-			if q.checkNoUnsolveableCells() {
-				if solution, solved := q.backtrackingSolve(); solved {
-					return solution, true
-				}
+
+	cans := p[guessIndex].ListCandidates()
+	canOrder := rand.Perm(len(cans))
+	for _, v := range canOrder {
+		q := p.clone()
+		can := cans[v]
+		q.unsafeGuess(guessIndex, can)
+		q.basicCheckCellsSeenBy(guessIndex)
+		if q.checkNoUnsolveableCells() {
+			if solution, solved := q.backtrackingSolve(); solved {
+				return solution, true
 			}
 		}
 	}

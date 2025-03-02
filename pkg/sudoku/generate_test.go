@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGenerateThreeBoxes(t *testing.T) {
+func TestGeneratePuzzle(t *testing.T) {
 	newCompletedPuzzle()
 }
 
