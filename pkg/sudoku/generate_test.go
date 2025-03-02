@@ -1,7 +1,23 @@
 package sudoku
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestGenerateThreeBoxes(t *testing.T) {
-	//generateThreeBoxes()
+	newCompletedPuzzle()
+}
+
+func TestClone(t *testing.T) {
+	p, err := InitializeFromFile("../../test/medium.txt")
+	assert.NoError(t, err)
+
+	q := p.clone()
+	assert.Equal(t, p[0].ListCandidates(), q[0].ListCandidates())
+
+	q.solveCellAs(0, 5)
+
+	assert.NotEqual(t, p[0], q[0])
 }

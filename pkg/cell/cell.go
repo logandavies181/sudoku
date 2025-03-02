@@ -23,12 +23,12 @@ func New(n int) Cell {
 	}
 }
 
-func (c *Cell) Solved() bool {
+func (c *Cell) Solved() (bool, error) {
 	if (c.Value != 0) != (c.candidates == 0) {
-		panic("must have either value or candidates")
+		return false, fmt.Errorf("must have either value or candidates")
 	}
 
-	return c.Value != 0 && c.candidates == 0
+	return c.Value != 0 && c.candidates == 0, nil
 }
 
 func (c *Cell) HasCandidate(n int) bool {
@@ -77,19 +77,21 @@ func (c *Cell) ListCandidates() []int {
 
 func (c *Cell) Solve() {
 	// todo: handle an error here maybe?
+	// todo: ^^
 	cds := c.ListCandidates()
 	if len(cds) == 1 {
 		c.SolveAs(cds[0])
 	}
 }
 
-func (c *Cell) SolveAs(val int) {
+func (c *Cell) SolveAs(val int) error {
 	if !c.HasCandidate(val) {
-		panic(fmt.Sprint("cell does not contain candidate ", val))
+		return fmt.Errorf("cell does not contain candidate %d", val)
 	}
 
 	c.Value = val
 	c.candidates = 0
+	return nil
 }
 
 func allCandidates() uint16 {

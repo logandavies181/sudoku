@@ -20,7 +20,9 @@ func newEmptyPuzzle() Puzzle {
 }
 
 func (p Puzzle) solveCellAs(id int, val int) {
-	p[id].SolveAs(val)
+	if err := p[id].SolveAs(val); err != nil {
+		panic(fmt.Sprintf("could not solve %d as %d", id, val))
+	}
 	/*
 		stack.Push(stack.SolveStackItem{
 			Index: id,
@@ -32,7 +34,9 @@ func (p Puzzle) solveCellAs(id int, val int) {
 
 // todo: make this safe
 func (p Puzzle) unsafeGuess(id int, val int) {
-	p[id].SolveAs(val)
+	if err := p[id].SolveAs(val); err != nil {
+		panic(fmt.Sprintf("could not guess %d as %d", id, val))
+	}
 	/*
 		stack.Push(stack.SolveStackItem{
 			Index: id,

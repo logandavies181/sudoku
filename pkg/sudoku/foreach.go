@@ -94,21 +94,31 @@ var (
 	}
 )
 
-func (p Puzzle) foreachUnsolvedCells(cellIds []int, f func(id int)) {
+func (p Puzzle) foreachUnsolvedCells(cellIds []int, f func(id int)) error {
 	for _, v := range cellIds {
 		c := p[v]
-		if !c.Solved() {
+		solved, err := c.Solved()
+		if err != nil {
+			return err
+		}
+		if !solved {
 			f(v)
 		}
 	}
+	return nil
 }
 
-func (p Puzzle) foreachAllUnsolvedCells(f func(id int)) {
+func (p Puzzle) foreachAllUnsolvedCells(f func(id int)) error {
 	for i, c := range p {
-		if !c.Solved() {
+		solved, err := c.Solved()
+		if err != nil {
+			return err
+		}
+		if !solved {
 			f(i)
 		}
 	}
+	return nil
 }
 
 func (p Puzzle) foreachSeenBy(id int, f func(id int)) {
@@ -118,13 +128,18 @@ func (p Puzzle) foreachSeenBy(id int, f func(id int)) {
 	}
 }
 
-func (p Puzzle) foreachUnsolvedSeenBy(id int, f func(id int)) {
+func (p Puzzle) foreachUnsolvedSeenBy(id int, f func(id int)) error {
 	seenByCells := p.getAllSeenBy(id)
 	for _, v := range seenByCells {
-		if !p[v].Solved() {
+		solved, err := p[v].Solved()
+		if err != nil {
+			return err
+		}
+		if !solved {
 			f(v)
 		}
 	}
+	return nil
 }
 
 func (p Puzzle) foreachEmptyCellIds(cellIds []int, f func(id int, v cell.Cell)) {
