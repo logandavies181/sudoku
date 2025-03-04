@@ -3,6 +3,8 @@ package sudoku
 import (
 	"fmt"
 	"math/rand"
+
+	"github.com/logandavies181/sudoku/pkg/cell"
 )
 
 func generateRandomCandidates() []int {
@@ -17,6 +19,14 @@ func (p Puzzle) clone() Puzzle {
 	q := make(Puzzle, 81)
 	for i, v := range p {
 		q[i] = v
+	}
+	return q
+}
+
+func (p Puzzle) cloneWithoutCandidates() Puzzle {
+	q := make(Puzzle, 81)
+	for i, v := range p {
+		q[i] = cell.New(v.Value)
 	}
 	return q
 }
