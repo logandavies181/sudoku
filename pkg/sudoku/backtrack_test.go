@@ -14,6 +14,16 @@ func TestGeneratePuzzle(t *testing.T) {
 	assert.Equal(t, -1, p.getFirstUnsolvedIndex())
 }
 
+func TestSolutionCount(t *testing.T) {
+	p, err := InitializeFromFile("../../test/almostsolved.txt")
+	assert.NoError(t, err)
+
+	p, ok, count := p.backtrackingSolve(true)
+	assert.NotNil(t, p)
+	assert.True(t, ok)
+	assert.Equal(t, 1, count)
+}
+
 func TestClone(t *testing.T) {
 	p, err := InitializeFromFile("../../test/medium.txt")
 	assert.NoError(t, err)

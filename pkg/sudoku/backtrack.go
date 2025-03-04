@@ -58,36 +58,55 @@ func (p Puzzle) checkNoUnsolveableCells() bool {
 
 func (p Puzzle) BacktrackingSolve() (Puzzle, error) {
 	p.basicCheckCells()
-	p, ok := p.backtrackingSolve()
+	p, ok, _ := p.backtrackingSolve(false)
 	if !ok {
-		p.Print()
 		return nil, fmt.Errorf("could not solve with backtracking")
 	}
 	return p, nil
 }
 
-func (p Puzzle) backtrackingSolve() (Puzzle, bool) {
-	guessIndex := p.getFirstUnsolvedIndex()
-	switch guessIndex {
-	case -1:
-		return p, true
-	case -2:
-		return nil, false
-	}
+// the count here assumes the puzzle is not already complete
+func (p Puzzle) backtrackingSolve(shouldContinue bool) (Puzzle, bool, int) {
+	var (
+		backTrackSolutions puzzleSet
+	)
 
-	cans := p[guessIndex].ListCandidates()
-	canOrder := rand.Perm(len(cans))
-	for _, v := range canOrder {
-		q := p.clone()
-		can := cans[v]
-		q.unsafeGuess(guessIndex, can)
-		q.basicCheckCellsSeenBy(guessIndex)
-		if q.checkNoUnsolveableCells() {
-			if solution, solved := q.backtrackingSolve(); solved {
-				return solution, true
+	var _backTrackingSolve func(p Puzzle, shouldContinue bool) (Puzzle, bool, int)
+	_backTrackingSolve = func(p Puzzle, shouldContinue bool) (Puzzle, bool, int) {
+		guessIndex := p.getFirstUnsolvedIndex()
+		switch guessIndex {
+		case -1:
+			backTrackSolutions = backTrackSolutions.add(p)
+			return p, true, len(backTrackSolutions)
+		case -2:
+			return nil, false, 0
+		}
+
+		cans := p[guessIndex].ListCandidates()
+		canOrder := rand.Perm(len(cans))
+		for _, v := range canOrder {
+			q := p.clone()
+			can := cans[v]
+			q.unsafeGuess(guessIndex, can)
+			q.basicCheckCellsSeenBy(guessIndex)
+
+			if !q.checkNoUnsolveableCells() {
+				continue
+			}
+
+			if solution, solved, count := _backTrackingSolve(q, shouldContinue); solved {
+				if !shouldContinue {
+					return solution, true, count
+				}
 			}
 		}
+
+		if len(backTrackSolutions) > 0 {
+			return backTrackSolutions[0], true, len(backTrackSolutions)
+		}
+
+		return nil, false, 0
 	}
 
-	return nil, false
+	return _backTrackingSolve(p, shouldContinue)
 }
