@@ -1,9 +1,7 @@
 package sudoku
 
 import (
-	"fmt"
 	"math/rand"
-	"time"
 
 	"github.com/logandavies181/sudoku/pkg/cell"
 )
@@ -19,12 +17,7 @@ func newCompletedPuzzle() Puzzle {
 		cells[i] = cell.New(v)
 	}
 
-	start := time.Now()
 	cells, _ = cells.BacktrackingSolve()
-
-	cells.Print()
-
-	fmt.Println(time.Now().Sub(start))
 
 	return cells
 }
@@ -39,7 +32,6 @@ func newPuzzle() Puzzle {
 
 			q[w] = cell.New(0)
 			q.basicCheckCells()
-			q.Print()
 			_, solved, numSolns := q.backtrackingSolve(true)
 			if !solved {
 				panic("couldn't backtrack solve newPuzzle")
@@ -54,4 +46,14 @@ func newPuzzle() Puzzle {
 	}
 
 	return nil
+}
+
+func (p Puzzle) clueCount() int {
+	count := 0
+	for _, v := range p {
+		if v.Value != 0 {
+			count++
+		}
+	}
+	return count
 }

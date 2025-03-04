@@ -1,6 +1,7 @@
 package sudoku
 
 import (
+	"fmt"
 	"math/rand"
 	"testing"
 
@@ -20,5 +21,7 @@ func TestNewPuzzle(t *testing.T) {
 	p := newPuzzle()
 	assert.NotNil(t, p)
 
-	//p.Print()
+	p.Print()
+
+	fmt.Println(p.clueCount())
 }
