@@ -34,7 +34,7 @@ func newPuzzle() Puzzle {
 	removeOrder := rand.Perm(40)
 
 	for _, v := range removeOrder {
-		for _, w := range []int{v, 80-v} {
+		for _, w := range []int{v, 80 - v} {
 			q := p.cloneWithoutCandidates()
 
 			q[w] = cell.New(0)
