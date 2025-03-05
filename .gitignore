@@ -1,3 +1,4 @@
 *.wasm
 sudoku
 !pkg/sudoku
+node_modules

@@ -1,0 +1,16 @@
+{
+  "name": "Sudoku",
+  "short_name": "Sudoku",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#172439",
+  "theme_color": "#172439",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any"
+    }
+  ]
+}

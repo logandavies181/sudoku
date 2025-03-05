@@ -1,0 +1,9 @@
+{
+  "nodeModulesDir": "auto",
+  "imports": {
+    "@tailwindcss/cli": "npm:@tailwindcss/cli@^4.0.0",
+    "@types/golang-wasm-exec": "npm:@types/golang-wasm-exec@^1.15.2",
+    "prettier": "npm:prettier@^3.4.2",
+    "tailwindcss": "npm:tailwindcss@^4.0.0"
+  }
+}
