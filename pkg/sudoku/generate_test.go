@@ -18,7 +18,7 @@ func TestNewCompletedPuzzle(t *testing.T) {
 }
 
 func TestNewPuzzle(t *testing.T) {
-	p := newPuzzle()
+	p := NewPuzzle(25, 10_000)
 	assert.NotNil(t, p)
 
 	p.Print()

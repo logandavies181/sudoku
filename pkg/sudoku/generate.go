@@ -22,26 +22,29 @@ func newCompletedPuzzle() Puzzle {
 	return cells
 }
 
-func newPuzzle() Puzzle {
+func NewPuzzle(targetClueCount, maxTries int) Puzzle {
 	p := newCompletedPuzzle()
-	removeOrder := rand.Perm(40)
 
-	for _, v := range removeOrder {
-		for _, w := range []int{v, 80 - v} {
-			q := p.cloneWithoutCandidates()
+	for range maxTries {
+		removeOrder := rand.Perm(40)
 
-			q[w] = cell.New(0)
-			q.basicCheckCells()
-			_, solved, numSolns := q.backtrackingSolve(true)
-			if !solved {
-				panic("couldn't backtrack solve newPuzzle")
+		for _, v := range removeOrder {
+			for _, w := range []int{v, 80 - v} {
+				q := p.cloneWithoutCandidates()
+
+				q[w] = cell.New(0)
+				q.basicCheckCells()
+				_, solved, numSolns := q.backtrackingSolve(true)
+				if !solved {
+					panic("couldn't backtrack solve newPuzzle")
+				}
+
+				if numSolns > 1 && q.clueCount() < targetClueCount {
+					return p
+				}
+
+				p = q.clone()
 			}
-
-			if numSolns > 1 {
-				return p
-			}
-
-			p = q.clone()
 		}
 	}
 
