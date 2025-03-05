@@ -4,6 +4,7 @@
     "npm:@tailwindcss/cli@*": "4.0.0",
     "npm:@tailwindcss/cli@4": "4.0.0",
     "npm:@types/golang-wasm-exec@^1.15.2": "1.15.2",
+    "npm:prettier@*": "3.4.2",
     "npm:prettier@^3.4.2": "3.4.2",
     "npm:tailwindcss@4": "4.0.0"
   },
