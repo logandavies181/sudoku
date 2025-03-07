@@ -1,7 +1,8 @@
 import { render } from "https://esm.sh/preact@10.25.3"
 
 import { html } from "./html.ts"
-import { Board } from "./lib/board.ts";
+import { Board } from "./components/board.ts";
+import { Navbar } from "./components/navbar.ts";
 
 // if ("serviceWorker" in navigator) {
 //   navigator.serviceWorker.register("sw.js", { scope: "/harmonies-planner/" })
@@ -9,6 +10,7 @@ import { Board } from "./lib/board.ts";
 
 function App() {
   return html`
+    <${Navbar} />
     <main class="flex justify-center min-w-full min-h-full">
       <${Board} />
     </main>

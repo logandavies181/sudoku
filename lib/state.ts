@@ -1,4 +1,4 @@
-import { cell } from "./board.ts"
+import { cell } from "../components/board.ts"
 
 class State {
   private cbs = new Array<(c: cell) => void>(81)
@@ -19,3 +19,15 @@ class State {
 }
 
 export const PuzzleState = new State()
+
+class GenericState<T> {
+  private cbs = new Map<string, (t: T) => void>
+
+  subscribe(name: string, cb: (t: T) => void) {
+    this.cbs.set(name, cb)
+  }
+
+  publish(t: T) {
+    this.cbs.forEach((cb) => cb(t))
+  }
+}

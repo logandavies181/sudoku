@@ -1,6 +1,6 @@
 import { html } from "../html.ts"
-import { PuzzleState } from "./state.ts"
-import { NewPuzzle } from "./sudoku.ts"
+import { PuzzleState } from "../lib/state.ts"
+import { NewPuzzle } from "../lib/sudoku.ts"
 
 import { useEffect, useState } from "https://esm.sh/preact@10.25.3/hooks"
 
