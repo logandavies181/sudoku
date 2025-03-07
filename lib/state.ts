@@ -21,7 +21,7 @@ class State {
 export const PuzzleState = new State()
 
 class GenericState<T> {
-  private cbs = new Map<string, (t: T) => void>
+  private cbs = new Map<string, (t: T) => void>()
 
   subscribe(name: string, cb: (t: T) => void) {
     this.cbs.set(name, cb)
