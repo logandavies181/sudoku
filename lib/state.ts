@@ -14,4 +14,4 @@ class State<T> {
   }
 }
 
-export const PuzzleState = new State<cell[]>
+export const PuzzleState = new State<cell[]>()

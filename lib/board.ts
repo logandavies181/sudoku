@@ -1,13 +1,12 @@
 import { html } from "../html.ts"
-import { PuzzleState } from "./state.ts";
-import { NewPuzzle } from "./sudoku.ts";
+import { PuzzleState } from "./state.ts"
+import { NewPuzzle } from "./sudoku.ts"
 
 import { useEffect, useState } from "https://esm.sh/preact@10.25.3/hooks"
 
 export type cell = {
   value: number
 }
-
 
 function xPos(src: number): number {
   return src % 9
@@ -21,7 +20,7 @@ function boxIndex(src: number): number {
   const x = xPos(src)
   const y = yPos(src)
 
-  return Math.floor(x/3) + Math.floor(y/3)*3
+  return Math.floor(x / 3) + Math.floor(y / 3) * 3
 }
 
 export function Board() {
@@ -78,9 +77,9 @@ type CellProps = {
 function Cell(props: CellProps) {
   const [cell, setCell] = useState({ value: 0 })
 
-  PuzzleState.subscribe(`${props.index}`, (c => {
+  PuzzleState.subscribe(`${props.index}`, (c) => {
     setCell(c[props.index])
-  }))
+  })
 
   return html`
     <div class="text-md border-1 border-solid flex text-center justify-center items-center aspect-square min-w-1/3">
