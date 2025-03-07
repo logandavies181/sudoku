@@ -1,17 +1,21 @@
 import { cell } from "./board.ts"
 
-class State<T> {
-  private cbs = new Map<string, (t: T) => void>()
+class State {
+  private cbs = new Array<(c: cell) => void>(81)
 
-  subscribe(name: string, cb: (t: T) => void) {
-    this.cbs.set(name, cb)
+  subscribe(index: number, cb: (c: cell) => void) {
+    this.cbs[index] = cb
   }
 
-  publish(t: T) {
-    for (const cb of this.cbs.values()) {
-      cb(t)
+  publish(index: number, c: cell) {
+    this.cbs[index](c)
+  }
+
+  publishAll(cs: cell[]) {
+    for (let i = 0; i < cs.length; i++) {
+      this.publish(i, cs[i])
     }
   }
 }
 
-export const PuzzleState = new State<cell[]>()
+export const PuzzleState = new State()

@@ -44,7 +44,7 @@ export function Board() {
     for (let i = 0; i < cells.length; i++) {
       cells[i] = { value: board[i] }
     }
-    PuzzleState.publish(cells)
+    PuzzleState.publishAll(cells)
   }, [])
 
   return html`
@@ -77,12 +77,21 @@ type CellProps = {
 function Cell(props: CellProps) {
   const [cell, setCell] = useState({ value: 0 })
 
-  PuzzleState.subscribe(`${props.index}`, (c) => {
-    setCell(c[props.index])
+  PuzzleState.subscribe(props.index, (c) => {
+    setCell(c)
   })
 
+  const onClick = () => {
+    const cellPlus = cell.value + 1
+    const newCell = { value: cellPlus > 9 ? 0 : cellPlus }
+    PuzzleState.publish(props.index, newCell)
+  }
+
   return html`
-    <div class="text-md border-1 border-solid flex text-center justify-center items-center aspect-square min-w-1/3">
+    <div
+      class="touch-manipulation text-md border-1 border-solid flex text-center justify-center items-center aspect-square min-w-1/3"
+      onClick=${onClick}
+    >
       ${cell.value ? cell.value : ""}
     </div>
   `
