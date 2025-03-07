@@ -5,4 +5,5 @@ const go = new Go()
 const result = await WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject)
 go.run(result.instance)
 
-export const NewPuzzle = globalThis.NewPuzzle as (targetClueCount: number, maxTries: number) => number[]
+// @ts-ignore _
+export const NewPuzzle = (globalThis.NewPuzzle) as (targetClueCount: number, maxTries: number) => number[]

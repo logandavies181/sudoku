@@ -3,7 +3,7 @@ alias c := check
     deno check **/*.ts
 
 alias b := build
-@build: 
+@build: check
     mkdir -p dist/sudoku
     cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" lib/vendor/wasm_exec
     bun build main.ts --outdir dist/sudoku

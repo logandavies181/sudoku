@@ -1,6 +1,8 @@
 import { html } from "../html.ts"
 import { NewPuzzle } from "./sudoku.ts";
 
+import { useState } from "https://esm.sh/preact@10.25.3/hooks"
+
 type cell = {
   value: number
 }
@@ -22,18 +24,22 @@ function boxIndex(src: number): number {
 }
 
 export function Board() {
-  const board = NewPuzzle(30, 10_000)
-
-  const boxes = new Array<Array<cell>>(9)
-  for (let i = 0; i < boxes.length; i++) {
-    boxes[i] = []
+  const initialBoxes = new Array<Array<cell>>(9)
+  for (let i = 0; i < initialBoxes.length; i++) {
+    initialBoxes[i] = []
   }
 
-  board.forEach((v, i) => {
-    const bi = boxIndex(i)
-    console.log(bi)
-    boxes[bi].push({ value: v })
-  })
+  const [boxes, setBoxes] = useState<cell[][]>(initialBoxes);
+
+  (async () => {
+    const board = NewPuzzle(30, 10_000)
+
+    board.forEach((v, i) => {
+      boxes[boxIndex(i)].push({ value: v })
+    })
+
+    setBoxes(boxes)
+  })()
 
   return html`
     <div class="flex grow flex-wrap bg-white min-w-full">
@@ -54,15 +60,6 @@ function Box(props: BoxProps) {
       ${props.cells.map((cell) => {
         return html`<${Cell} cell=${cell} />`
       })}
-      <!-- <${Cell} /> -->
-      <!-- <${Cell} /> -->
-      <!-- <${Cell} /> -->
-      <!-- <${Cell} /> -->
-      <!-- <${Cell} /> -->
-      <!-- <${Cell} /> -->
-      <!-- <${Cell} /> -->
-      <!-- <${Cell} /> -->
-      <!-- <${Cell} /> -->
     </div>
   `
 }
