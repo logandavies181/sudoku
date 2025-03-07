@@ -44,19 +44,17 @@ export function Board() {
   const [boxes, setBoxes] = useState<cell[][]>(initialBoxes);
 
   useEffect(() => {
-    (async () => {
-      const now = Date.now()
-      const board = NewPuzzle(30, 10_000)
-      console.log(Date.now() - now)
+    const now = Date.now()
+    const board = NewPuzzle(30, 10_000)
+    console.log(Date.now() - now)
 
-      const nb = newBoxes()
-      board.forEach((v, i) => {
-	nb[boxIndex(i)].push({ value: v })
-      })
+    const nb = newBoxes()
+    board.forEach((v, i) => {
+      nb[boxIndex(i)].push({ value: v })
+    })
 
-      setBoxes(nb)
-      console.log("loaded")
-    })()
+    setBoxes(nb)
+    console.log("loaded")
   }, [])
 
   return html`

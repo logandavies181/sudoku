@@ -10,8 +10,8 @@ alias b := build
     #bun build sw.ts --outdir dist/sudoku
     #echo "\n// $(git rev-parse HEAD) $(uuidgen)" >> dist/sudoku/sw.js # trigger reload
     deno run -A npm:@tailwindcss/cli -o dist/sudoku/output.css
-    GOOS=js GOARCH=wasm go build -o main.wasm ./wasm
-    cp index.html public/favicon.svg manifest.json main.wasm dist/sudoku
+    GOOS=js GOARCH=wasm go build -o dist/sudoku/main.wasm ./wasm
+    cp index.html public/favicon.svg manifest.json dist/sudoku
 
 alias s := serve
 @serve: build
