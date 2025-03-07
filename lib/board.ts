@@ -1,41 +1,80 @@
 import { html } from "../html.ts"
+import { NewPuzzle } from "./sudoku.ts";
+
+type cell = {
+  value: number
+}
+
+
+function xPos(src: number): number {
+	return src % 9
+}
+
+function yPos(src: number): number {
+	return Math.floor(src / 9)
+}
+
+function boxIndex(src: number): number {
+	const x = xPos(src)
+	const y = yPos(src)
+
+	return Math.floor(x/3) + Math.floor(y/3)*3
+}
 
 export function Board() {
+  const board = NewPuzzle(30, 10_000)
+
+  const boxes = new Array<Array<cell>>(9)
+  for (let i = 0; i < boxes.length; i++) {
+    boxes[i] = []
+  }
+
+  board.forEach((v, i) => {
+    const bi = boxIndex(i)
+    console.log(bi)
+    boxes[bi].push({ value: v })
+  })
+
   return html`
     <div class="flex grow flex-wrap bg-white min-w-full">
-      <${Box} />
-      <${Box} />
-      <${Box} />
-      <${Box} />
-      <${Box} />
-      <${Box} />
-      <${Box} />
-      <${Box} />
-      <${Box} />
+      ${boxes.map((cells) => {
+        return html`<${Box} cells=${cells} />`
+      })}
     </div>
   `
 }
 
-function Box() {
+type BoxProps = {
+  cells: cell[]
+}
+
+function Box(props: BoxProps) {
   return html`
     <div class="border-2 border-solid flex grow flex-wrap bg-white max-w-1/3 min-w-1/3">
-      <${Cell} />
-      <${Cell} />
-      <${Cell} />
-      <${Cell} />
-      <${Cell} />
-      <${Cell} />
-      <${Cell} />
-      <${Cell} />
-      <${Cell} />
+      ${props.cells.map((cell) => {
+        return html`<${Cell} cell=${cell} />`
+      })}
+      <!-- <${Cell} /> -->
+      <!-- <${Cell} /> -->
+      <!-- <${Cell} /> -->
+      <!-- <${Cell} /> -->
+      <!-- <${Cell} /> -->
+      <!-- <${Cell} /> -->
+      <!-- <${Cell} /> -->
+      <!-- <${Cell} /> -->
+      <!-- <${Cell} /> -->
     </div>
   `
 }
 
-function Cell() {
+type CellProps = {
+  cell: cell
+}
+
+function Cell(props: CellProps) {
   return html`
     <div class="text-md border-1 border-solid flex text-center justify-center items-center aspect-square min-w-1/3">
-      ${(Math.random() * 10) % 10 | 1}
+      ${props.cell.value ? props.cell.value : ""}
     </div>
   `
 }
