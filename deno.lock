@@ -3,6 +3,7 @@
   "specifiers": {
     "npm:@tailwindcss/cli@*": "4.0.0",
     "npm:@tailwindcss/cli@4": "4.0.0",
+    "npm:@types/golang-wasm-exec@*": "1.15.2",
     "npm:@types/golang-wasm-exec@^1.15.2": "1.15.2",
     "npm:prettier@*": "3.4.2",
     "npm:prettier@^3.4.2": "3.4.2",
@@ -266,7 +267,8 @@
   },
   "remote": {
     "https://esm.sh/htm@3.1.1": "618fdb44f13eae1da6c01bfee68f97bf0b37d784d12eabacc85e5d306ebd1310",
-    "https://esm.sh/preact@10.25.3": "5a6dd0f7a583bc1081166279d6bf678238b84eab862b34f1da460d65b27c7bb0"
+    "https://esm.sh/preact@10.25.3": "5a6dd0f7a583bc1081166279d6bf678238b84eab862b34f1da460d65b27c7bb0",
+    "https://esm.sh/preact@10.25.3/hooks": "7e58da5c47801c9eb609ead58b84e6faa42e06d2d9707c4057d63d0f91529d8b"
   },
   "workspace": {
     "dependencies": [

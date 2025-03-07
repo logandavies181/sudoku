@@ -1,7 +1,7 @@
 import { html } from "../html.ts"
 import { NewPuzzle } from "./sudoku.ts";
 
-import { useState } from "https://esm.sh/preact@10.25.3/hooks"
+import { useEffect, useState } from "https://esm.sh/preact@10.25.3/hooks"
 
 type cell = {
   value: number
@@ -23,23 +23,41 @@ function boxIndex(src: number): number {
 	return Math.floor(x/3) + Math.floor(y/3)*3
 }
 
+function newBoxes(): Array<Array<cell>> {
+  const b = new Array<Array<cell>>(9)
+  for (let i = 0; i < b.length; i++) {
+    b[i] = []
+  }
+  return b
+}
+
 export function Board() {
-  const initialBoxes = new Array<Array<cell>>(9)
+  const initialBoxes = newBoxes()
+  const initialCells = []
   for (let i = 0; i < initialBoxes.length; i++) {
-    initialBoxes[i] = []
+    initialCells.push({ value: 0 })
+  }
+  for (let i = 0; i < initialBoxes.length; i++) {
+    initialBoxes[i] = initialCells
   }
 
   const [boxes, setBoxes] = useState<cell[][]>(initialBoxes);
 
-  (async () => {
-    const board = NewPuzzle(30, 10_000)
+  useEffect(() => {
+    (async () => {
+      const now = Date.now()
+      const board = NewPuzzle(30, 10_000)
+      console.log(Date.now() - now)
 
-    board.forEach((v, i) => {
-      boxes[boxIndex(i)].push({ value: v })
-    })
+      const nb = newBoxes()
+      board.forEach((v, i) => {
+	nb[boxIndex(i)].push({ value: v })
+      })
 
-    setBoxes(boxes)
-  })()
+      setBoxes(nb)
+      console.log("loaded")
+    })()
+  }, [])
 
   return html`
     <div class="flex grow flex-wrap bg-white min-w-full">
