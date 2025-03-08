@@ -1,4 +1,5 @@
 import { html } from "../html.ts"
+import { globalState } from "../lib/state.ts";
 
 export function Selector() {
   return html`
@@ -30,7 +31,12 @@ export function Selector() {
       <${SelectorBox} index="7" />
       <${SelectorBox} index="8" />
       <${SelectorBox} index="9" />
-      ${OtherBoxFactory("e", () => {})} ${OtherBoxFactory("p", () => {})} ${OtherBoxFactory("d", () => {})}
+      ${OtherBoxFactory("e", () => {
+        const newState = globalState.state
+        newState.activeNum = 0
+        globalState.publish(newState)
+      })}
+      ${OtherBoxFactory("p", () => {})} ${OtherBoxFactory("d", () => {})}
     </div>
   `
 }
@@ -45,7 +51,19 @@ function boxClass(nomargin: boolean) {
 }
 
 function SelectorBox(props: SelectorBoxProps) {
-  return html` <div class=${boxClass(props.nomargin)}>${props.index}</div> `
+  const onClick = () => {
+    const newState = globalState.state
+    newState.activeNum = props.index
+    globalState.publish(newState)
+  }
+  return html`
+    <div
+      class=${boxClass(props.nomargin)}
+      onClick=${onClick}
+    >
+      ${props.index}
+    </div>
+  `
 }
 
 function OtherBoxFactory(content: any, onClick: () => void) {
