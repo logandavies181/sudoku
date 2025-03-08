@@ -3,6 +3,7 @@ import { render } from "https://esm.sh/preact@10.25.3"
 import { html } from "./html.ts"
 import { Board } from "./components/board.ts";
 import { Navbar } from "./components/navbar.ts";
+import { Selector } from "./components/selector.ts";
 
 // if ("serviceWorker" in navigator) {
 //   navigator.serviceWorker.register("sw.js", { scope: "/harmonies-planner/" })
@@ -10,10 +11,13 @@ import { Navbar } from "./components/navbar.ts";
 
 function App() {
   return html`
-    <${Navbar} />
-    <main class="flex justify-center min-w-full min-h-full">
-      <${Board} />
-    </main>
+    <div class="flex grow flex-col min-w-full min-h-full">
+      <${Navbar} />
+      <main class="flex grow flex-col justify-between min-w-full">
+        <${Board} />
+        <${Selector} />
+      </main>
+    </div>
   `
 }
 

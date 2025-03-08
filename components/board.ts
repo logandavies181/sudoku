@@ -48,7 +48,7 @@ export function Board() {
   }, [])
 
   return html`
-    <div class="flex grow flex-wrap bg-white min-w-full">
+    <div class="flex flex-wrap bg-white min-w-full">
       ${boxes.map((cells) => {
         return html`<${Box} cellIndexes=${cells} />`
       })}
