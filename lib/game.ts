@@ -1,6 +1,6 @@
-import { cell } from "./cell.ts";
-import { globalState } from "./state.ts";
-import { NewPuzzle } from "./sudoku.ts";
+import { cell } from "./cell.ts"
+import { globalState } from "./state.ts"
+import { NewPuzzle } from "./sudoku.ts"
 
 export function handleUpdate(index: number) {
   const c = puzzleState.state[index]

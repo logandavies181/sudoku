@@ -23,5 +23,5 @@ export type GlobalState = {
 }
 
 export const globalState = new GenericState<GlobalState>({
-  activeNum: 1
+  activeNum: 1,
 })

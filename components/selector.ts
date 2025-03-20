@@ -1,5 +1,5 @@
 import { html } from "../html.ts"
-import { globalState } from "../lib/state.ts";
+import { globalState } from "../lib/state.ts"
 
 export function Selector() {
   return html`

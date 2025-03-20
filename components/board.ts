@@ -1,6 +1,6 @@
 import { html } from "../html.ts"
-import { cell } from "../lib/cell.ts";
-import { handleUpdate, newGame } from "../lib/game.ts";
+import { cell } from "../lib/cell.ts"
+import { handleUpdate, newGame } from "../lib/game.ts"
 import { puzzleState } from "../lib/game.ts"
 
 import { useEffect, useState } from "https://esm.sh/preact@10.25.3/hooks"
