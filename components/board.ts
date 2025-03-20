@@ -1,13 +1,9 @@
 import { html } from "../html.ts"
-import { globalState, PuzzleState } from "../lib/state.ts"
-import { NewPuzzle } from "../lib/sudoku.ts"
+import { cell } from "../lib/cell.ts";
+import { handleUpdate, newGame } from "../lib/game.ts";
+import { puzzleState } from "../lib/game.ts"
 
 import { useEffect, useState } from "https://esm.sh/preact@10.25.3/hooks"
-
-export type cell = {
-  value: number
-  initial: boolean
-}
 
 function xPos(src: number): number {
   return src % 9
@@ -35,20 +31,8 @@ export function Board() {
     }
     boxes[bi].push(i)
   }
-
   useEffect(() => {
-    const now = Date.now()
-    const board = NewPuzzle(30, 10_000)
-    console.log(Date.now() - now)
-
-    const cells = new Array<cell>(board.length)
-    for (let i = 0; i < cells.length; i++) {
-      cells[i] = {
-        value: board[i],
-        initial: board[i] != 0,
-      }
-    }
-    PuzzleState.publishAll(cells)
+    newGame()
   }, [])
 
   return html`
@@ -81,15 +65,15 @@ type CellProps = {
 function Cell(props: CellProps) {
   const [cell, setCell] = useState<cell>({ value: 0, initial: false })
 
-  PuzzleState.subscribe(props.index, (c) => {
+  puzzleState.subscribe(props.index, (c) => {
     setCell(c)
   })
 
   const onClick = () => {
-    cell.value = globalState.state.activeNum
-    PuzzleState.publish(props.index, cell)
+    handleUpdate(props.index)
   }
-  let cellClass = "touch-manipulation text-md border-1 border-solid flex text-center justify-center items-center aspect-square min-w-1/3"
+
+  let cellClass = "text-md border-1 border-solid flex text-center justify-center items-center aspect-square min-w-1/3"
   if (cell.initial) {
     cellClass += " bg-slate-300"
   }

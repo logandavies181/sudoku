@@ -11,7 +11,7 @@ import { Selector } from "./components/selector.ts";
 
 function App() {
   return html`
-    <div class="flex grow flex-col min-w-full min-h-full">
+    <div class="touch-manipulation flex grow flex-col min-w-full min-h-full">
       <${Navbar} />
       <main class="flex grow flex-col justify-between min-w-full">
         <${Board} />
