@@ -14,7 +14,5 @@ export function boxIndex(src: number): number {
 }
 
 export function canSee(src: number, dst: number): boolean {
-  return xPos(src) == xPos(dst) ||
-    yPos(src) == yPos(dst) ||
-    boxIndex(src) == boxIndex(dst)
+  return xPos(src) == xPos(dst) || yPos(src) == yPos(dst) || boxIndex(src) == boxIndex(dst)
 }

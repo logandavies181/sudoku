@@ -1,5 +1,5 @@
 import { cell } from "./cell.ts"
-import { RedoStack, UndoStack } from "./stack.ts";
+import { RedoStack, UndoStack } from "./stack.ts"
 import { globalState } from "./state.ts"
 import { CheckIfCanUpdateCell, NewPuzzle, UpdateCell } from "./sudoku.ts"
 

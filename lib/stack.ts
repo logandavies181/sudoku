@@ -12,7 +12,7 @@ class Stack<T> {
 }
 
 export type StackItem = {
-  value: number,
+  value: number
 }
 
 export const UndoStack = new Stack<StackItem>()

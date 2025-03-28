@@ -22,3 +22,4 @@ alias s := serve
 alias f := fmt
 @fmt:
     deno run -A npm:prettier -w **/*.ts
+    go fmt ./...
