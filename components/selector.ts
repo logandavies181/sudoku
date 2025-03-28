@@ -5,32 +5,32 @@ export function Selector() {
   return html`
     <div class="flex flex-wrap justify-around min-w-full">
       <${SelectorBox}
-        index="1"
+        index=1
         nomargin
       />
       <${SelectorBox}
-        index="2"
+        index=2
         nomargin
       />
       <${SelectorBox}
-        index="3"
+        index=3
         nomargin
       />
       <${SelectorBox}
-        index="4"
+        index=4
         nomargin
       />
       <${SelectorBox}
-        index="5"
+        index=5
         nomargin
       />
       <${SelectorBox}
-        index="6"
+        index=6
         nomargin
       />
-      <${SelectorBox} index="7" />
-      <${SelectorBox} index="8" />
-      <${SelectorBox} index="9" />
+      <${SelectorBox} index=7 />
+      <${SelectorBox} index=8 />
+      <${SelectorBox} index=9 />
       ${OtherBoxFactory("e", () => {
         const newState = globalState.state
         newState.activeNum = 0
@@ -53,7 +53,7 @@ function boxClass(nomargin: boolean) {
 function SelectorBox(props: SelectorBoxProps) {
   const onClick = () => {
     const newState = globalState.state
-    newState.activeNum = props.index
+    newState.activeNum = props.index | 0
     globalState.publish(newState)
   }
   return html`

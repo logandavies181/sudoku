@@ -121,7 +121,7 @@ func (p Puzzle) foreachAllUnsolvedCells(f func(id int)) error {
 	return nil
 }
 
-func (p Puzzle) foreachSeenBy(id int, f func(id int)) {
+func (p Puzzle) ForeachSeenBy(id int, f func(id int)) {
 	seenByCells := p.getAllSeenBy(id)
 	for _, v := range seenByCells {
 		f(v)

@@ -32,7 +32,7 @@ func TestForeachSeenBy(t *testing.T) {
 	assert.NoError(t, err)
 
 	cellIds := make([]int, 0)
-	p.foreachSeenBy(0, func(id int) {
+	p.ForeachSeenBy(0, func(id int) {
 		cellIds = append(cellIds, id)
 	})
 

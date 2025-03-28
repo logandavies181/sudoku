@@ -1,6 +1,7 @@
 import { cell } from "./cell.ts"
+import { RedoStack, UndoStack } from "./stack.ts";
 import { globalState } from "./state.ts"
-import { NewPuzzle } from "./sudoku.ts"
+import { CheckIfCanUpdateCell, NewPuzzle, UpdateCell } from "./sudoku.ts"
 
 export function handleUpdate(index: number) {
   const c = puzzleState.state[index]
@@ -8,7 +9,24 @@ export function handleUpdate(index: number) {
     return
   }
 
-  puzzleState.state[index].value = globalState.state.activeNum
+  const newNum = globalState.state.activeNum
+
+  if (!CheckIfCanUpdateCell(index, newNum)) {
+    console.log(`checked and couldn't update ${index} with ${c.value}`)
+    console.log(newNum)
+    console.log(typeof newNum)
+    return
+  }
+  if (!UpdateCell(index, newNum)) {
+    console.log(`got error updating ${index} with ${c.value}`)
+    return
+  }
+
+  UndoStack.push({
+    value: c.value,
+  })
+  RedoStack.empty()
+  puzzleState.state[index].value = newNum
   puzzleState.publish(index)
 }
 
@@ -22,6 +40,8 @@ export function newGame() {
       initial: board[i] != 0,
     }
   }
+  UndoStack.empty()
+  RedoStack.empty()
   puzzleState.publishAll(cells)
 }
 

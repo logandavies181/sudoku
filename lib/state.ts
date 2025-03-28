@@ -1,5 +1,3 @@
-import { cell } from "./cell.ts"
-
 class GenericState<T> {
   private cbs = new Map<string, (t: T) => void>()
   state: T

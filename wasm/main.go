@@ -13,6 +13,8 @@ func addExportFunc(name string, fn func(js.Value, []js.Value) any) {
 
 func main() {
 	addExportFunc("NewPuzzle", NewPuzzle)
+	addExportFunc("UpdateCell", UpdateCell)
+	addExportFunc("CheckIfCanUpdateCell", CheckIfCanUpdateCell)
 	fmt.Println("sudoku wasm instantiated")
 	select {}
 }

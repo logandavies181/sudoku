@@ -4,21 +4,7 @@ import { handleUpdate, newGame } from "../lib/game.ts"
 import { puzzleState } from "../lib/game.ts"
 
 import { useEffect, useState } from "https://esm.sh/preact@10.25.3/hooks"
-
-function xPos(src: number): number {
-  return src % 9
-}
-
-function yPos(src: number): number {
-  return Math.floor(src / 9)
-}
-
-function boxIndex(src: number): number {
-  const x = xPos(src)
-  const y = yPos(src)
-
-  return Math.floor(x / 3) + Math.floor(y / 3) * 3
-}
+import { boxIndex } from "../lib/positions.ts";
 
 export function Board() {
   const boxes = new Array<Array<number>>(9)
