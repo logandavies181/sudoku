@@ -31,7 +31,7 @@ export function handleUpdate(index: number) {
 }
 
 export function newGame() {
-  const board = NewPuzzle(30, 10_000)
+  const board = NewPuzzle(31, 10_000)
 
   const cells = new Array<cell>(board.length)
   for (let i = 0; i < cells.length; i++) {

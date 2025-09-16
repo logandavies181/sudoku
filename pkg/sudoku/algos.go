@@ -58,7 +58,6 @@ func (p Puzzle) basicSolveRBCSingle() bool {
 		}
 
 		for _, can := range singleCandidates {
-			can := can
 			p.foreachEmptyCellIds(cellIds, func(id int, v cell.Cell) {
 				if v.HasCandidate(can) {
 					found = true

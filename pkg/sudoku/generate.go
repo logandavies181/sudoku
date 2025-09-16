@@ -28,8 +28,9 @@ func NewPuzzle(targetClueCount, maxTries int) Puzzle {
 	for range maxTries {
 		removeOrder := rand.Perm(40)
 
+		var soln Puzzle
 		for _, v := range removeOrder {
-			for _, w := range []int{v, 80 - v} {
+			for i, w := range []int{v, 80 - v} {
 				q := p.cloneWithoutCandidates()
 
 				q[w] = cell.New(0)
@@ -40,10 +41,20 @@ func NewPuzzle(targetClueCount, maxTries int) Puzzle {
 				}
 
 				if numSolns > 1 && q.clueCount() < targetClueCount {
-					return p
+					// Ensure the puzzle is always symmetrical by requiring that an even number of
+					// iterations has happened. The centre cell gets removed twice, so it's still
+					// an even number of iterations if removed.
+					if (i == 1) {
+						return p
+					} else {
+						return soln
+					}
 				}
 
 				p = q.clone()
+				if (i == 1) {
+					soln = p.clone()
+				}
 			}
 		}
 	}
