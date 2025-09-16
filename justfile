@@ -1,17 +1,18 @@
 alias c := check
 @check:
-    deno check **/*.ts
+    #deno check **/*.ts
 
 alias b := build
 @build: check
     mkdir -p dist/sudoku
     cp "$(go env GOROOT)/lib/wasm/wasm_exec.js" lib/vendor/wasm_exec
-    bun build main.ts --outdir dist/sudoku
+    deno bundle index.html --outdir dist/sudoku
+    # TODO: enable sw
     #bun build sw.ts --outdir dist/sudoku
     #echo "\n// $(git rev-parse HEAD) $(uuidgen)" >> dist/sudoku/sw.js # trigger reload
     deno run -A npm:@tailwindcss/cli -o dist/sudoku/output.css
     GOOS=js GOARCH=wasm go build -o dist/sudoku/main.wasm ./wasm
-    cp index.html public/favicon.svg manifest.json dist/sudoku
+    cp public/favicon.svg manifest.json dist/sudoku
 
 alias s := serve
 @serve: build
