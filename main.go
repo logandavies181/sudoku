@@ -30,7 +30,7 @@ func mainE() error {
 
 	err = puzzle.Solve()
 
-	fmt.Println(time.Now().Sub(start))
+	fmt.Println(time.Since(start))
 
 	puzzle.Print()
 

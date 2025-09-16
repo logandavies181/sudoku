@@ -24,3 +24,8 @@ alias f := fmt
 @fmt:
     deno run -A npm:prettier -w **/*.ts
     go fmt ./...
+
+alias t := test
+@test:
+    echo "Running go tests"
+    go test ./...
