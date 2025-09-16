@@ -17,9 +17,7 @@ func generateRandomCandidates() []int {
 
 func (p Puzzle) clone() Puzzle {
 	q := make(Puzzle, 81)
-	for i, v := range p {
-		q[i] = v
-	}
+	copy(q, p)
 	return q
 }
 
