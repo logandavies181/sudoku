@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"syscall/js"
 
+	"github.com/logandavies181/sudoku/pkg/cell"
 	"github.com/logandavies181/sudoku/pkg/sudoku"
 )
 
@@ -26,10 +27,15 @@ func NewPuzzle(_ js.Value, args []js.Value) any {
 	return sudokuToIntArr(p)
 }
 
-// (index: number, value: number) => void
+// (index: number, value: number) => boolean
 func UpdateCell(_ js.Value, args []js.Value) any {
 	index := args[0].Int()
 	value := args[1].Int()
+
+	if value == 0 {
+		state[index] = cell.New(0)
+		return true
+	}
 
 	err := state[index].SolveAs(value)
 	if err != nil {
@@ -43,6 +49,10 @@ func UpdateCell(_ js.Value, args []js.Value) any {
 func CheckIfCanUpdateCell(_ js.Value, args []js.Value) any {
 	index := args[0].Int()
 	proposedValue := args[1].Int()
+
+	if proposedValue == 0 {
+		return true
+	}
 
 	found := false
 	state.ForeachSeenBy(index, func(id int) {

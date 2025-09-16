@@ -52,7 +52,7 @@ func (c *Cell) RemoveCandidate(n int) bool {
 func (c *Cell) NumCandidates() int {
 	candidates := c.candidates
 	count := 0
-	for i := 0; i < 9; i++ {
+	for range 9 {
 		// todo use hasCandidates
 		if candidates&1 == 1 {
 			count++

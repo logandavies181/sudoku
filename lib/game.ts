@@ -12,13 +12,13 @@ export function handleUpdate(index: number) {
   const newNum = globalState.state.activeNum
 
   if (!CheckIfCanUpdateCell(index, newNum)) {
-    console.log(`checked and couldn't update ${index} with ${c.value}`)
+    console.log(`checked and couldn't update ${index} with ${newNum}`)
     console.log(newNum)
     console.log(typeof newNum)
     return
   }
   if (!UpdateCell(index, newNum)) {
-    console.log(`got error updating ${index} with ${c.value}`)
+    console.log(`got error updating ${index} with ${newNum}`)
     return
   }
 
