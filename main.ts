@@ -5,9 +5,9 @@ import { Board } from "./components/board.ts";
 import { Navbar } from "./components/navbar.ts";
 import { Selector } from "./components/selector.ts";
 
-// if ("serviceWorker" in navigator) {
-//   navigator.serviceWorker.register("sw.js", { scope: "/harmonies-planner/" })
-// }
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js", { scope: "/" })
+}
 
 function App() {
   return html`

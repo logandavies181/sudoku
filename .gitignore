@@ -1,4 +1,5 @@
 *.wasm
+dist
 sudoku
 !pkg/sudoku
 node_modules

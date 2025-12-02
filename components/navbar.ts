@@ -6,7 +6,7 @@ export function Navbar() {
       <div class="flex flex-row">
         <img
           class="ml-2"
-          src="/sudoku/favicon.svg"
+          src="/favicon.svg"
           width="50"
           height="50"
         />
